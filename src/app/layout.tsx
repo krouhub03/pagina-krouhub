@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import HeroHome from "@/src/components/sections/HeroHome";
-import Seccion from "@/src/components/sections/Seccion";
-import Servicios from "@/src/components/sections/Services";
+import Header from "../components/layout/Header";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -26,15 +24,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-
+   
+    <Header />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-              <HeroHome />
-              <Seccion />
-              <Servicios />
+      >  
         {children}
       </body>
+      <footer className="py-10 border-t border-white/5 bg-[#020617] text-center">
+          <p className="text-gray-500 text-sm">
+            © {new Date().getFullYear()} KrouHub Servicios Digitales.
+          </p>
+      </footer>
     </html>
   );
 }

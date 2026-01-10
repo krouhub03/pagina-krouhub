@@ -2,6 +2,11 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import HeroHome from "@/src/components/sections/HeroHome";
+import Seccion from "@/src/components/sections/Seccion";
+import Servicios from "@/src/components/sections/Services";
+import MetodologiaHome from "@/src/components/sections/MetodologiaHome";
+import ProyectosHome from "@/src/components/sections/ProyectosHome";
 
 // Importación de componentes
 import Navbar from "@/src/components/shared/Navbar";
@@ -12,10 +17,10 @@ import Navbar from "@/src/components/shared/Navbar";
  */
 const Home: React.FC = () => {
   return (
-    <div className="bg-[#030712] min-h-screen selection:bg-cyan-500/30">
+    <div className="bg-[#030712]  selection:bg-cyan-500/30">
       
       {/* 1. Navbar: Generalmente fijo o absoluto */}
-      <Navbar />
+  
 
       {/* 2. Hero: Sección de impacto inicial */}
    
@@ -29,13 +34,12 @@ const Home: React.FC = () => {
         >
 
         </motion.div>
-
+              <HeroHome />
+              <Seccion />
+              <Servicios />
+              <MetodologiaHome / >
+              <ProyectosHome />
         {/* 7. Footer */}
-        <footer className="py-10 border-t border-white/5 bg-[#020617] text-center">
-          <p className="text-gray-500 text-sm">
-            © {new Date().getFullYear()} KrouHub Servicios Digitales.
-          </p>
-        </footer>
       </main>
     </div>
   );
