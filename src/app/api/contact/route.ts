@@ -3,33 +3,35 @@ import { EmailService } from '../../../services/emailService';
 
 export async function POST(request: Request) {
     try {
-        const { nombre, email, telefono, servicio, mensaje } = await request.json();
+        const body = await request.json();
+        const { nombre, email, telefono, servicio, mensaje } = body;
 
         const smtpUser = process.env.SMTP_USER;
-        const adminEmail = process.env.ADMIN_EMAIL;
-        const smtpPassword = process.env.SMTP_PASSWORD;
+        const smtpPass = process.env.SMTP_PASSWORD || process.env.SMTP_PASS;
         const smtpHost = process.env.SMTP_HOST;
         const smtpPort = process.env.SMTP_PORT;
+        const adminEmail = process.env.ADMIN_EMAIL;
 
-        // Verificar que las variables de entorno existan
-        if (!smtpUser || !smtpPassword || !adminEmail || !smtpHost || !smtpPort) {
-            console.error("Faltan variables de entorno SMTP");
-            console.error({
+        // 1. Validar que las variables de entorno existan
+        if (!smtpUser || !smtpPass || !smtpHost || !smtpPort || !adminEmail) {
+            const status = {
                 SMTP_USER: !!smtpUser,
-                SMTP_PASSWORD: !!smtpPassword,
-                ADMIN_EMAIL: !!adminEmail,
+                SMTP_PASS: !!smtpPass,
                 SMTP_HOST: !!smtpHost,
-                SMTP_PORT: !!smtpPort
-            });
+                SMTP_PORT: !!smtpPort,
+                ADMIN_EMAIL: !!adminEmail
+            };
+            console.error("Faltan variables de entorno SMTP:", status);
             return NextResponse.json({
-                error: "Configuración del servidor incompleta"
+                error: "Configuración del servidor incompleta",
+                envStatus: status
             }, { status: 500 });
         }
 
-        // Crear el servicio de email DESPUÉS de verificar las variables
+        // 2. Crear el servicio de email
         const emailService = new EmailService();
 
-        // Email para el administrador
+        // 3. Email para el administrador
         const adminHtml = `
             <div style="font-family: sans-serif; padding: 20px; color: #333;">
                 <h2 style="color: #0891b2; border-bottom: 2px solid #0891b2; padding-bottom: 10px;">Nuevo mensaje de contacto</h2>
@@ -45,7 +47,7 @@ export async function POST(request: Request) {
             </div>
         `;
 
-        // Email de confirmación para el cliente
+        // 4. Email de confirmación para el cliente
         const userHtml = `
             <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 30px; border: 1px solid #eef2f3; border-radius: 16px; background: #fff; color: #1a202c;">
                 <h2 style="color: #0891b2; margin-top: 0;">¡Hola ${nombre}!</h2>
@@ -66,17 +68,18 @@ export async function POST(request: Request) {
             </div>
         `;
 
-        // Enviar ambos correos
+        // 5. Enviar ambos correos en paralelo
         await Promise.all([
             emailService.sendEmail(adminEmail, `🚀 Nuevo Proyecto: ${nombre} - ${servicio}`, adminHtml, email),
             emailService.sendEmail(email, `¡Hemos recibido tu mensaje, ${nombre}!`, userHtml)
         ]);
 
-        return NextResponse.json({ message: "Mensajes enviados con éxito" }, { status: 200 });
+        return NextResponse.json({ success: true, message: "Mensajes enviados con éxito" });
+
     } catch (error: any) {
         console.error("Error en API Contacto:", error);
         return NextResponse.json(
-            { error: "Error al enviar el correo", details: error.message },
+            { error: "Error al enviar el correo: " + error.message },
             { status: 500 }
         );
     }
