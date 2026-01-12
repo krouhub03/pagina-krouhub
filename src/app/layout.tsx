@@ -17,6 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.krouhub.com'),
   title: {
     default: "KrouHub | Servicios Digitales y Desarrollo Web",
     template: "%s | KrouHub",
