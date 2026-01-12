@@ -1,6 +1,8 @@
 "use client";
+
 import { motion, useTransform, useMotionValue, MotionValue } from "framer-motion";
-import { Send, User, Mail, MessageSquare, Phone, Sparkles, CheckCircle2 } from "lucide-react";
+import { Sparkles, CheckCircle2 } from "lucide-react";
+import ContactForm from "../forms/ContactForm";
 
 interface ContactanosProps {
     scrollProgress?: MotionValue<number>;
@@ -61,67 +63,14 @@ export default function Contactanos({ scrollProgress }: ContactanosProps) {
                         </div>
                     </div>
 
-                    {/* Formulario */}
+                    {/* Formulario extraído */}
                     <div className="w-full lg:w-1/2">
-                        <form className="relative bg-[#0B0F19]/80 backdrop-blur-3xl border border-white/10 p-6 md:p-10 rounded-[24px] lg:rounded-[32px] space-y-4 md:space-y-5 shadow-xl">
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
-                                <div className="space-y-1.5">
-                                    <label className="text-[9px] lg:text-[10px] font-mono text-gray-500 uppercase tracking-widest ml-1">Nombre</label>
-                                    <div className="relative group">
-                                        <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-cyan-400 transition-colors" size={16} />
-                                        <input type="text" placeholder="Tu nombre" className="w-full bg-white/[0.03] border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-cyan-500/40 transition-all text-sm" />
-                                    </div>
-                                </div>
-
-                                <div className="space-y-1.5">
-                                    <label className="text-[9px] lg:text-[10px] font-mono text-gray-500 uppercase tracking-widest ml-1">Teléfono</label>
-                                    <div className="relative group">
-                                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-cyan-400 transition-colors" size={16} />
-                                        <input type="tel" placeholder="+34..." className="w-full bg-white/[0.03] border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-cyan-500/40 transition-all text-sm" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="space-y-1.5">
-                                <label className="text-[9px] lg:text-[10px] font-mono text-gray-500 uppercase tracking-widest ml-1">Email</label>
-                                <div className="relative group">
-                                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-purple-400 transition-colors" size={16} />
-                                    <input type="email" placeholder="email@empresa.com" className="w-full bg-white/[0.03] border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-purple-500/40 transition-all text-sm" />
-                                </div>
-                            </div>
-
-                            <div className="space-y-1.5">
-                                <label className="text-[9px] lg:text-[10px] font-mono text-gray-500 uppercase tracking-widest ml-1">¿Qué necesitas?</label>
-                                <select className="w-full bg-[#0B0F19] border border-white/10 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-white/20 transition-all text-sm">
-                                    <option>Desarrollo y Diseño Web</option>
-                                    <option>Marketing y Growth</option>
-                                    <option>Automatizaciones</option>
-                                </select>
-                            </div>
-
-                            <div className="space-y-1.5">
-                                <label className="text-[9px] lg:text-[10px] font-mono text-gray-500 uppercase tracking-widest ml-1">Mensaje</label>
-                                <div className="relative group">
-                                    <MessageSquare className="absolute left-4 top-3 text-gray-600 group-focus-within:text-white transition-colors" size={16} />
-                                    <textarea placeholder="Cuéntanos un poco..." className="w-full bg-white/[0.03] border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-white/20 transition-all resize-none text-sm"></textarea>
-                                </div>
-                            </div>
-
-                            <motion.button
-                                whileHover={{ scale: 1.01 }}
-                                whileTap={{ scale: 0.98 }}
-                                className="w-full bg-gradient-to-r from-cyan-600 to-indigo-600 p-[1px] rounded-xl overflow-hidden mt-2"
-                            >
-                                <div className="w-full h-full bg-[#0B0F19]/90 py-3.5 rounded-[11px] flex items-center justify-center gap-2">
-                                    <span className="text-white font-bold text-sm tracking-wide">Comenzar Ahora</span>
-                                    <Send size={16} className="text-white" />
-                                </div>
-                            </motion.button>
-                        </form>
+                        <ContactForm />
                     </div>
                 </motion.div>
             </div>
         </motion.section>
     );
 }
+
+
