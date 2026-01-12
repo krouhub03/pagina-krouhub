@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useRef } from "react";
-import { 
-  motion, 
-  useScroll, 
-  useTransform, 
-  Variants, 
-  MotionValue 
+import {
+  motion,
+  useScroll,
+  useTransform,
+  Variants,
+  MotionValue
 } from "framer-motion";
 
 // Definimos la estructura de datos para las tarjetas
@@ -19,7 +19,7 @@ interface Feature {
 const Services: React.FC = () => {
   // Tipamos la referencia del contenedor
   const targetRef = useRef<HTMLElement>(null);
-  
+
   // 1. Efecto Parallax para el fondo basado en el scroll de esta sección
   const { scrollYProgress }: { scrollYProgress: MotionValue<number> } = useScroll({
     target: targetRef,
@@ -42,19 +42,19 @@ const Services: React.FC = () => {
   };
 
   const itemVariants: Variants = {
-    hidden: { 
-      opacity: 0, 
+    hidden: {
+      opacity: 0,
       y: 40,
-      filter: "blur(10px)" 
+      filter: "blur(10px)"
     },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       filter: "blur(0px)",
-      transition: { 
-        duration: 0.8, 
-        ease: [0.25, 1, 0.5, 1] 
-      } 
+      transition: {
+        duration: 0.8,
+        ease: [0.25, 1, 0.5, 1]
+      }
     }
   };
 
@@ -77,12 +77,12 @@ const Services: React.FC = () => {
   ];
 
   return (
-    <section 
+    <section
       ref={targetRef}
-      className="relative py-32 bg-[#030712] overflow-hidden"
+      className="relative py-10 overflow-hidden min-h-screen snap-start flex flex-col justify-center"
     >
       {/* Elementos decorativos de fondo con Parallax */}
-      <motion.div 
+      <motion.div
         style={{ opacity }}
         className="absolute inset-0 z-0"
       >
@@ -90,17 +90,23 @@ const Services: React.FC = () => {
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
       </motion.div>
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: false, amount: 0.3 }}
+        className="max-w-7xl mx-auto px-6 relative z-10"
+      >
+
         {/* Título animado con Scroll Reveal */}
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={itemVariants}
-          className="text-center mb-20"
+          className="text-center mb-12 md:mb-20"
         >
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white mb-6">
             ¿Por qué elegir <span className="text-cyan-400">KrouHub</span>?
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto text-lg">
@@ -127,14 +133,14 @@ const Services: React.FC = () => {
               <span className="absolute top-4 right-8 text-7xl font-bold text-white/5 group-hover:text-cyan-500/20 transition-colors">
                 {item.icon}
               </span>
-              
+
               <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-cyan-400 transition-colors">
                 {item.title}
               </h3>
               <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">
                 {item.desc}
               </p>
-              
+
               {/* Decoración inferior de la tarjeta */}
               <div className="mt-6 w-12 h-1 bg-cyan-500/30 group-hover:w-full group-hover:bg-cyan-500 transition-all duration-700 rounded-full" />
             </motion.div>
@@ -156,7 +162,7 @@ const Services: React.FC = () => {
             Nos enfocamos en entender tu negocio, optimizar procesos y entregar soluciones que superen expectativas, no solo que se vean bien.
           </p>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 };

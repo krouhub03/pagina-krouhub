@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "../components/layout/Header";
+import SpotlightBackground from "../components/ui/SpotlightBackground";
+import SmoothScroller from "../components/ui/SmoothScroller";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -24,18 +27,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-   
-    <Header />
+
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >  
+      >
+        <SmoothScroller />
+        <SpotlightBackground />
+        <Header />
         {children}
-      </body>
-      <footer className="py-10 border-t border-white/5 bg-[#020617] text-center">
+        <footer className="py-10 border-t border-white/5 text-center relative z-10">
           <p className="text-gray-500 text-sm">
             © {new Date().getFullYear()} KrouHub Servicios Digitales.
           </p>
-      </footer>
+        </footer>
+      </body>
     </html>
   );
 }

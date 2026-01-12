@@ -41,12 +41,11 @@ const Navbar: React.FC = () => {
   ];
 
   return (
-    <nav 
-      className={`fixed top-0 z-[100] w-full transition-all duration-500 ${
-        scrolled 
-        ? "bg-[#030712]/70 backdrop-blur-md border-b border-white/5 py-2" 
-        : "bg-transparent py-6"
-      }`}
+    <nav
+      className={`fixed top-0 z-[100] w-full transition-all duration-500 ${scrolled
+          ? "bg-[#030712]/70 backdrop-blur-md md:border-b md:border-white/5 py-2"
+          : "bg-transparent py-6"
+        }`}
     >
       {/* BARRA DE PROGRESO */}
       <motion.div
@@ -56,19 +55,19 @@ const Navbar: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          
+
           {/* LOGO */}
-          <motion.div 
-            initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             className="flex-shrink-0"
           >
             <Link href="/" className="flex items-center">
-              <Image 
+              <Image
                 src={logo}
-                alt="Logo Krou Hub" 
-                width={350} 
-                height={250} 
+                alt="Logo Krou Hub"
+                width={350}
+                height={250}
                 priority // Agregamos priority para LCP (Largest Contentful Paint)
                 className="h-12 w-auto opacity-90 hover:opacity-100 transition-opacity"
               />
@@ -78,9 +77,9 @@ const Navbar: React.FC = () => {
           {/* MENÚ DESKTOP */}
           <div className="hidden md:flex space-x-1 items-center">
             {navLinks.map((link) => (
-              <Link 
-                key={link.name} 
-                href={link.href} 
+              <Link
+                key={link.name}
+                href={link.href}
                 className="px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors relative group"
               >
                 {link.name}
@@ -88,8 +87,8 @@ const Navbar: React.FC = () => {
               </Link>
             ))}
 
-            <Link 
-              href="/contacto" 
+            <Link
+              href="/contacto"
               className="ml-4 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 px-5 py-2 rounded-full text-sm font-bold hover:bg-cyan-500 hover:text-white transition-all duration-300"
             >
               Contacto
@@ -98,13 +97,13 @@ const Navbar: React.FC = () => {
 
           {/* BOTÓN MÓVIL */}
           <div className="md:hidden">
-            <button 
-              onClick={() => setIsOpen(!isOpen)} 
+            <button
+              onClick={() => setIsOpen(!isOpen)}
               className="text-white p-2 focus:outline-none"
               aria-label="Toggle menu"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {isOpen 
+                {isOpen
                   ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
                 }
@@ -117,24 +116,24 @@ const Navbar: React.FC = () => {
       {/* MENÚ MÓVIL */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             className="absolute top-full left-0 w-full bg-[#030712] border-b border-white/10 flex flex-col p-6 space-y-4 md:hidden"
           >
             {navLinks.map((link) => (
-              <Link 
-                key={link.name} 
-                href={link.href} 
-                onClick={() => setIsOpen(false)} 
+              <Link
+                key={link.name}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
                 className="text-lg text-gray-300 hover:text-cyan-400 transition-colors"
               >
                 {link.name}
               </Link>
             ))}
-            <Link 
-              href="/contacto" 
+            <Link
+              href="/contacto"
               onClick={() => setIsOpen(false)}
               className="text-lg text-cyan-400 font-bold"
             >

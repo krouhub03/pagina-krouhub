@@ -2,13 +2,13 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { 
-  Search, 
-  Palette, 
-  Home as HomeIcon, 
-  Settings, 
+import {
+  Search,
+  Palette,
+  Home as HomeIcon,
+  Settings,
   Rocket,
-  LucideIcon 
+  LucideIcon
 } from "lucide-react";
 
 // Definimos la estructura de cada paso del proceso
@@ -54,19 +54,25 @@ const pasos: Paso[] = [
 
 const Proceso: React.FC = () => {
   return (
-    <section className="py-24 bg-[#030712] relative overflow-hidden">
+    <section className="py-16 md:py-24 relative overflow-hidden min-h-screen snap-start flex flex-col justify-center">
       {/* Luz de fondo sutil tipo halo */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.03)_0%,transparent_70%)] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: false, amount: 0.3 }}
+        className="max-w-7xl mx-auto px-6 relative z-10"
+      >
         {/* Título */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6">
             Tu proyecto, tu ritmo
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">
@@ -83,11 +89,10 @@ const Proceso: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className={`p-6 rounded-3xl border backdrop-blur-md transition-all duration-300 group ${
-                paso.num === "03" 
-                  ? "bg-cyan-500/10 border-cyan-500/40 shadow-[0_0_25px_rgba(6,182,212,0.2)] hover:shadow-[0_0_35px_rgba(6,182,212,0.3)]"
-                  : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 hover:shadow-[0_0_15px_rgba(0,255,255,0.1)]"
-              }`}
+              className={`p-6 rounded-3xl border backdrop-blur-md transition-all duration-300 group ${paso.num === "03"
+                ? "bg-cyan-500/10 border-cyan-500/40 shadow-[0_0_25px_rgba(6,182,212,0.2)] hover:shadow-[0_0_35px_rgba(6,182,212,0.3)]"
+                : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 hover:shadow-[0_0_15px_rgba(0,255,255,0.1)]"
+                }`}
             >
               <div className="flex justify-between items-start mb-6">
                 {/* Icono dinámico */}
@@ -113,7 +118,7 @@ const Proceso: React.FC = () => {
         </div>
 
         {/* Mensaje de confianza final */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           className="mt-12 text-center"
@@ -123,7 +128,7 @@ const Proceso: React.FC = () => {
             Hacemos realidad tu proyecto
           </div>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 };

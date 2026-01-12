@@ -2,13 +2,13 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { 
-  Monitor, 
-  BarChart3, 
-  Bot, 
-  ArrowRight, 
+import {
+  Monitor,
+  BarChart3,
+  Bot,
+  ArrowRight,
   CheckCircle2,
-  LucideIcon 
+  LucideIcon
 } from "lucide-react";
 
 // Definimos la interfaz para cada servicio
@@ -54,16 +54,17 @@ const servicios: Servicio[] = [
 
 const Servicios: React.FC = () => {
   return (
-    <section className="py-24 bg-[#030712] relative overflow-hidden">
-      
-      {/* Fondo de rejilla sutil + degradado de profundidad */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#030712] via-[#030712]/90 to-[#030712]/80 pointer-events-none" />
+    <section className="py-16 md:py-24 relative overflow-hidden min-h-screen snap-start flex flex-col justify-center">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: false, amount: 0.3 }}
+        className="max-w-7xl mx-auto px-6 relative z-10"
+      >
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        
         {/* Encabezado */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -72,7 +73,7 @@ const Servicios: React.FC = () => {
           <span className="text-cyan-500 font-semibold tracking-wider uppercase text-sm mb-4 block">
             Nuestros Servicios
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6">
             Soluciones digitales diseñadas para <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
               escalar tu negocio
@@ -99,7 +100,7 @@ const Servicios: React.FC = () => {
               <h3 className="text-2xl font-bold text-white mb-3">
                 {servicio.title}
               </h3>
-              
+
               <p className="text-gray-400 mb-8 leading-relaxed">
                 {servicio.desc}
               </p>
@@ -125,7 +126,7 @@ const Servicios: React.FC = () => {
             </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };
