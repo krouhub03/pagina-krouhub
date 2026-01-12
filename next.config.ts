@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // @ts-ignore - Turbopack is still experimental in some versions
+  turbopack: {
+    root: process.cwd(),
+  },
   images: {
     remotePatterns: [
       {

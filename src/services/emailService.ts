@@ -4,17 +4,18 @@ export class EmailService {
     private transporter;
 
     constructor() {
+        // En Hostinger, 465 con SSL (secure: true) es lo más común y seguro
         const port = parseInt(process.env.SMTP_PORT || '465', 10);
         const smtpUser = process.env.SMTP_USER || "admin@krouhub.com";
         const smtpPass = process.env.SMTP_PASSWORD || "2lN&Lpr6?|";
         const smtpHost = process.env.SMTP_HOST || "smtp.hostinger.com";
 
-        console.log('EmailService: Initializing with host:', smtpHost, 'port:', port, 'user:', smtpUser);
+        console.log(`[EmailService] Initializing: ${smtpHost}:${port} | User: ${smtpUser} | SSL: ${port === 465}`);
 
         this.transporter = nodemailer.createTransport({
             host: smtpHost,
             port: port,
-            secure: port === 465, // En Hostinger: true para 465 (SSL), false para 587 (TLS/STARTTLS)
+            secure: port === 465,
             auth: {
                 user: smtpUser,
                 pass: smtpPass,
