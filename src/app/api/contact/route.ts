@@ -1,56 +1,33 @@
 import { NextResponse } from 'next/server';
 import { EmailService } from '../../../services/emailService';
-import fs from 'fs';
-import path from 'path';
-
-const emailService = new EmailService();
 
 export async function POST(request: Request) {
     try {
         const { nombre, email, telefono, servicio, mensaje } = await request.json();
 
-        // Diagnóstico: ¿Existe el archivo .env.local?
-        const envPath = path.join(process.cwd(), '.env.local');
-        const envExists = fs.existsSync(envPath);
-        console.log("--- DIAGNÓSTICO ---");
-        console.log("Directorio actual (cwd):", process.cwd());
-        console.log("¿Existe .env.local en la raíz?:", envExists);
-
-        if (envExists) {
-            const content = fs.readFileSync(envPath, 'utf8');
-            const lines = content.split('\n');
-            const keys = lines
-                .map(line => line.split('=')[0].trim())
-                .filter(key => key && !key.startsWith('#'));
-            console.log("Claves encontradas en .env.local:", keys);
-        }
-
         const smtpUser = process.env.SMTP_USER;
         const adminEmail = process.env.ADMIN_EMAIL;
         const smtpPassword = process.env.SMTP_PASSWORD;
-
-        console.log("Valor SMTP_USER:", smtpUser);
-        console.log("Valor ADMIN_EMAIL:", adminEmail);
-        console.log("¿SMTP_PASSWORD existe?:", !!smtpPassword);
-        console.log("-------------------");
-
+        const smtpHost = process.env.SMTP_HOST;
+        const smtpPort = process.env.SMTP_PORT;
 
         // Verificar que las variables de entorno existan
-        if (!smtpUser || !smtpPassword || !adminEmail) {
+        if (!smtpUser || !smtpPassword || !adminEmail || !smtpHost || !smtpPort) {
             console.error("Faltan variables de entorno SMTP");
+            console.error({
+                SMTP_USER: !!smtpUser,
+                SMTP_PASSWORD: !!smtpPassword,
+                ADMIN_EMAIL: !!adminEmail,
+                SMTP_HOST: !!smtpHost,
+                SMTP_PORT: !!smtpPort
+            });
             return NextResponse.json({
-                error: "Configuración del servidor incompleta",
-                diag: {
-                    cwd: process.cwd(),
-                    envExists,
-                    user: !!smtpUser,
-                    admin: !!adminEmail,
-                    pass: !!smtpPassword
-                }
+                error: "Configuración del servidor incompleta"
             }, { status: 500 });
         }
 
-
+        // Crear el servicio de email DESPUÉS de verificar las variables
+        const emailService = new EmailService();
 
         // Email para el administrador
         const adminHtml = `
