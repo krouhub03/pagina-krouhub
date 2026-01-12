@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { motion, AnimatePresence, useScroll, useSpring, MotionValue } from 'framer-motion';
 
 // Importante: Asegúrate de que la ruta del logo sea correcta según tu árbol de proyecto
-import logo from "@/public/KrouHub_Logo_blanco.png"
+import logo from "@/../public/KrouHub_Logo_blanco.png"
 
 // Definimos la interfaz para los links de navegación
 interface NavLink {

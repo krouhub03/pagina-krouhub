@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Send, User, Mail, MessageSquare, Phone, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
 
 export default function ContactForm() {
-    // Estado del formulario
+    // Estado del formulario (Tus variables en Español)
     const [formData, setFormData] = useState({
         nombre: "",
         email: "",
@@ -28,10 +28,20 @@ export default function ContactForm() {
         setErrorMessage("");
 
         try {
+            // AQUÍ ESTÁ LA CORRECCIÓN:
+            // Convertimos tus datos (español) a lo que espera la API (inglés)
+            const apiPayload = {
+                name: formData.nombre,
+                email: formData.email,
+                phone: formData.telefono,
+                subject: formData.servicio,
+                message: formData.mensaje // Esto soluciona el error de "campo obligatorio"
+            };
+
             const response = await fetch("/api/contact", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(apiPayload), // Enviamos el payload traducido
             });
 
             if (response.ok) {
@@ -66,7 +76,7 @@ export default function ContactForm() {
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-4">¡Mensaje Enviado!</h3>
                 <p className="text-gray-400 mb-8">
-                    Gracias por contactarnos. Hemos enviado una confirmación a tu correo y te responderemos en breve.
+                    Gracias por contactarnos. Hemos recibido tu mensaje correctamente.
                 </p>
                 <button
                     onClick={() => setStatus("idle")}

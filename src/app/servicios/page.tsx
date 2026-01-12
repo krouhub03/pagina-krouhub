@@ -1,10 +1,10 @@
 "use client";
 import { useScroll } from "framer-motion";
-import HeroServices from "@/src/components/sections/HeroServices";
-import DesarrolloWeb from "@/src/components/sections/DesarrolloWeb";
-import Marketing from "@/src/components/sections/Marketing";
-import Automatizaciones from "@/src/components/sections/Automatizaciones";
-import Contactanos from "@/src/components/sections/Contactanos";
+import HeroServices from "@/components/sections/HeroServices";
+import DesarrolloWeb from "@/components/sections/DesarrolloWeb";
+import Marketing from "@/components/sections/Marketing";
+import Automatizaciones from "@/components/sections/Automatizaciones";
+import Contactanos from "@/components/sections/Contactanos";
 
 export default function Page() {
   const { scrollYProgress } = useScroll();
