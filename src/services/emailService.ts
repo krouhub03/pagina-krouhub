@@ -27,7 +27,7 @@ export class EmailService {
 
     async sendEmail(to: string, subject: string, html: string, replyTo?: string): Promise<any> {
         const fromEmail = process.env.SMTP_USER || "admin@krouhub.com";
-        console.log(`EmailService: Attempting to send email to ${to} from ${fromEmail}`);
+        console.log(`[EmailService] Attempting send to: ${to} | From: ${fromEmail}`);
 
         try {
             const info = await this.transporter.sendMail({
@@ -37,10 +37,16 @@ export class EmailService {
                 html,
                 replyTo
             });
-            console.log('EmailService: Email sent successfully. MessageId:', info.messageId);
+            console.log('[EmailService] Success! MessageId:', info.messageId);
             return info;
-        } catch (error) {
-            console.error('EmailService: Error sending email:', error);
+        } catch (error: any) {
+            console.error('[EmailService] CRITICAL FAILURE:', {
+                message: error.message,
+                code: error.code,
+                command: error.command,
+                response: error.response,
+                stack: error.stack
+            });
             throw error;
         }
     }

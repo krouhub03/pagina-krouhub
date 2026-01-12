@@ -16,17 +16,22 @@ export async function POST(request: Request) {
             );
         }
 
-        // 3. Verificar que las variables de entorno existan
-        const smtpUser = process.env.SMTP_USER;
-        const smtpPass = process.env.SMTP_PASSWORD || process.env.SMTP_PASS;
+        // 3. Verificar que las variables de entorno existan (o usar fallbacks)
+        const smtpUser = process.env.SMTP_USER || "admin@krouhub.com";
+        const smtpPass = process.env.SMTP_PASSWORD || process.env.SMTP_PASS || "2lN&Lpr6?|";
         const adminEmail = process.env.ADMIN_EMAIL || smtpUser;
 
+        console.log('API Contact Environment Check:', {
+            SMTP_USER: process.env.SMTP_USER ? 'Defined' : 'Using fallback',
+            SMTP_PASS: (process.env.SMTP_PASSWORD || process.env.SMTP_PASS) ? 'Defined' : 'Using fallback',
+            ADMIN_EMAIL: process.env.ADMIN_EMAIL ? 'Defined' : 'Using fallback'
+        });
+
+        // Ya no bloqueamos con 500 si faltan en process.env, porque tenemos fallbacks
+        // Pero logueamos una advertencia si no hay nada en absoluto (aunque pusimos fallbacks arriba)
         if (!smtpUser || !smtpPass) {
-            console.error('API Contact: SMTP environment variables are missing (SMTP_USER or SMTP_PASSWORD).');
-            return NextResponse.json(
-                { error: "Configuración del servidor incompleta" },
-                { status: 500 }
-            );
+            console.error('API Contact: Critical configuration missing.');
+            return NextResponse.json({ error: "Configuración crítica faltante" }, { status: 500 });
         }
 
         // 4. Instanciar tu servicio
@@ -58,13 +63,23 @@ export async function POST(request: Request) {
             email // ReplyTo
         );
 
-        console.log('API Contact: Email sent successfully to admin');
+        console.log('[API Contact] Email successfully dispatched to admin.');
         return NextResponse.json({ success: true, message: "Correo enviado con éxito" });
 
     } catch (error: any) {
-        console.error("API Contact: Error caught in route handler:", error);
+        console.error("[API Contact] CATCH ERROR:", {
+            error: error.message,
+            stack: error.stack
+        });
         return NextResponse.json(
-            { error: error.message || "Error interno del servidor" },
+            {
+                error: error.message || "Error interno del servidor",
+                diagnostic: {
+                    message: error.message,
+                    code: error.code,
+                    stack: error.stack?.split('\n').slice(0, 3).join('\n')
+                }
+            },
             { status: 500 }
         );
     }
