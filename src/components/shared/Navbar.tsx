@@ -43,8 +43,8 @@ const Navbar: React.FC = () => {
   return (
     <nav
       className={`fixed top-0 z-[100] w-full transition-all duration-500 ${scrolled
-          ? "bg-[#030712]/70 backdrop-blur-md md:border-b md:border-white/5 py-2"
-          : "bg-transparent py-6"
+        ? "bg-[#030712]/70 backdrop-blur-md py-2"
+        : "bg-transparent py-6"
         }`}
     >
       {/* BARRA DE PROGRESO */}
