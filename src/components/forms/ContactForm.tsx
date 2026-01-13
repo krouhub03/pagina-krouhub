@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Script from "next/script";
 import { Send, User, Mail, MessageSquare, Phone, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
 
 export default function ContactForm() {
@@ -16,6 +17,16 @@ export default function ContactForm() {
 
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessage, setErrorMessage] = useState("");
+
+    // Limpiar badge de reCAPTCHA cuando el componente se desmonte
+    useEffect(() => {
+        return () => {
+            const badge = document.querySelector('.grecaptcha-badge');
+            if (badge && badge.parentElement) {
+                badge.parentElement.removeChild(badge);
+            }
+        };
+    }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -115,6 +126,10 @@ export default function ContactForm() {
             onSubmit={handleSubmit}
             className="relative bg-[#0B0F19]/80 backdrop-blur-3xl border border-white/10 p-6 md:p-10 rounded-[24px] lg:rounded-[32px] space-y-4 md:space-y-5 shadow-xl"
         >
+            <Script
+                src="https://www.google.com/recaptcha/enterprise.js?render=6Ldg3EgsAAAAAFMJ1c9b5fA-MswgA2EbKpyxnrps"
+                strategy="afterInteractive"
+            />
             {status === "error" && (
                 <div className="bg-red-500/10 border border-red-500/20 p-4 rounded-xl flex items-center gap-3 text-red-400 text-sm">
                     <AlertCircle size={18} />

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 import Header from "../components/layout/Header";
 import SpotlightBackground from "../components/ui/SpotlightBackground";
@@ -73,10 +72,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Script
-          src="https://www.google.com/recaptcha/enterprise.js?render=6Ldg3EgsAAAAAFMJ1c9b5fA-MswgA2EbKpyxnrps"
-          strategy="beforeInteractive"
-        />
         <GoogleAnalytics />
         <SmoothScroller />
         <SpotlightBackground />
