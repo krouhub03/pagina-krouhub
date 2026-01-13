@@ -1,57 +1,57 @@
 import nodemailer from 'nodemailer';
 
+// Definimos la interfaz para los adjuntos (opcional, ayuda con TypeScript)
+interface Attachment {
+    filename: string;
+    content: Buffer | string;
+    cid?: string;
+}
+
 export class EmailService {
     private transporter;
 
     constructor() {
-        // En Hostinger, 465 con SSL (secure: true) es lo más común y seguro
-        const port = parseInt(process.env.SMTP_PORT || '587', 10);
-        const smtpUser = process.env.SMTP_USER;
-        const smtpPass = process.env.SMTP_PASSWORD || process.env.SMTP_PASS;
-        const smtpHost = process.env.SMTP_HOST || "smtp.hostinger.com";
-
-        // Logic for Hostinger: 465 usually needs secure:true, 587 needs secure:false
-        const isSecure = port === 465;
-
-        console.log(`[EmailService] Initializing: ${smtpHost}:${port} | User: ${smtpUser || 'MISSING'} | Secure: ${isSecure}`);
+        const port = Number(process.env.SMTP_PORT) || 587; // Por defecto 587 si falla la variable
 
         this.transporter = nodemailer.createTransport({
-            host: smtpHost,
+            host: process.env.SMTP_HOST,
             port: port,
-            secure: isSecure,
+            // AQUÍ ESTÁ EL CAMBIO CLAVE:
+            // Solo usar secure: true si el puerto es 465. Para 587 debe ser false.
+            secure: port === 465,
             auth: {
-                user: smtpUser,
-                pass: smtpPass,
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASSWORD || process.env.SMTP_PASS,
             },
+            // Opcional: Esto ayuda si tienes problemas con certificados auto-firmados en desarrollo
             tls: {
-                // Helps with certificate issues on Hostinger shared servers
                 rejectUnauthorized: false
             }
         });
     }
 
-    async sendEmail(to: string, subject: string, html: string, replyTo?: string): Promise<any> {
-        const fromEmail = process.env.SMTP_USER || "admin@krouhub.com";
-        console.log(`[EmailService] Attempting send to: ${to} | From: ${fromEmail}`);
+    async sendEmail(
+        to: string,
+        subject: string,
+        html: string,
+        replyTo?: string,
+        attachments?: Attachment[]
+    ) {
+        const mailOptions = {
+            from: `"KrouHub Web" <${process.env.SMTP_USER}>`,
+            to,
+            subject,
+            html,
+            replyTo,
+            attachments,
+        };
 
         try {
-            const info = await this.transporter.sendMail({
-                from: `"Krouhub" <${fromEmail}>`,
-                to,
-                subject,
-                html,
-                replyTo
-            });
-            console.log('[EmailService] Success! MessageId:', info.messageId);
+            const info = await this.transporter.sendMail(mailOptions);
+            console.log("Message sent: %s", info.messageId);
             return info;
-        } catch (error: any) {
-            console.error('[EmailService] CRITICAL FAILURE:', {
-                message: error.message,
-                code: error.code,
-                command: error.command,
-                response: error.response,
-                stack: error.stack
-            });
+        } catch (error) {
+            console.error("Error sending email: ", error);
             throw error;
         }
     }

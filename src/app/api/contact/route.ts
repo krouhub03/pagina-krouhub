@@ -4,87 +4,116 @@ import { EmailService } from '@/services/emailService';
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        console.log('API Contact: Received request body:', JSON.stringify(body, null, 2));
-
         const { name, email, message, subject, phone } = body;
 
+        // --- VALIDACIÓN ---
         if (!email || !message) {
-            console.log('API Contact: Missing required fields (email or message)');
-            return NextResponse.json(
-                { error: "Faltan campos obligatorios" },
-                { status: 400 }
-            );
+            return NextResponse.json({ error: "Faltan campos obligatorios" }, { status: 400 });
         }
 
-        // 3. Verificar que las variables de entorno existan
         const smtpUser = process.env.SMTP_USER;
         const smtpPass = process.env.SMTP_PASSWORD || process.env.SMTP_PASS;
         const adminEmail = process.env.ADMIN_EMAIL || smtpUser;
 
-        console.log('[API Contact] Environment Check:', {
-            SMTP_USER: smtpUser ? 'Defined' : 'MISSING',
-            SMTP_PASS: smtpPass ? 'Defined' : 'MISSING',
-            ADMIN_EMAIL: process.env.ADMIN_EMAIL ? 'Defined' : (smtpUser ? 'Using fallback' : 'MISSING')
-        });
-
         if (!smtpUser || !smtpPass) {
-            console.error('[API Contact] Critical Configuration Missing: SMTP_USER or SMTP_PASSWORD.');
-            return NextResponse.json(
-                {
-                    error: "Configuración del servidor incompleta",
-                    details: "Faltan variables de entorno SMTP en el servidor."
-                },
-                { status: 500 }
-            );
+            return NextResponse.json({ error: "Error de configuración del servidor" }, { status: 500 });
         }
 
-        // 4. Instanciar tu servicio
-        console.log('API Contact: Initializing EmailService.');
+        // --- CONFIGURACIÓN DE TEMA (KrouHub Style) ---
+        const theme = {
+            bgMain: "#dbedf1ff",     // Fondo oscuro profundo (como tu web)
+            bgCard: "#0f172a",     // Fondo de la tarjeta (un poco más claro)
+            primary: "#0ea5e9",    // Azul Cian (similar a tus botones)
+            textMain: "#ffffff",   // Texto blanco
+            textSec: "#94a3b8",    // Texto gris claro
+            border: "#1e293b"      // Bordes sutiles
+        };
+
+        const logoUrl = "https://krouhub.com/KrouHub_Logo_blanco.png"; // Asegúrate que sea un PNG transparente
+        const safeName = name || "Usuario";
+        const safeSubject = subject || "Consulta General";
         const emailService = new EmailService();
 
-        // 5. Preparar el HTML del correo para el administrador
+        // --- COMPONENTES REUTILIZABLES ---
+
+        // Logo con protección básica
+        const logoHtml = `
+            <a href="https://krouhub.com" target="_blank" style="text-decoration: none; display: block;">
+                <img 
+                    src="${logoUrl}" 
+                    alt="KrouHub" 
+                    width="150" 
+                    style="display: block; margin: 0 auto; user-select: none; pointer-events: none;"
+                >
+            </a>
+        `;
+
+        // Footer estándar
+        const footerHtml = `
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid ${theme.border}; text-align: center; font-size: 12px; color: ${theme.textSec};">
+                <p style="margin: 0;">© ${new Date().getFullYear()} KrouHub. Servicios digitales</p>
+            </div>
+        `;
+
+        // --- 1. HTML ADMINISTRADOR (Notificación Interna) ---
+        // Diseño limpio y de alto contraste para lectura rápida
         const adminHtml = `
-            <div style="font-family: sans-serif; padding: 20px; color: #333;">
-                <h2 style="color: #0891b2; border-bottom: 2px solid #0891b2; padding-bottom: 10px;">Nuevo mensaje de contacto</h2>
-                <p><strong>Nombre:</strong> ${name}</p>
-                <p><strong>Email:</strong> ${email}</p>
-                <p><strong>Teléfono:</strong> ${phone || 'No proporcionado'}</p>
-                <p><strong>Asunto/Servicio:</strong> ${subject || 'Consulta general'}</p>
-                <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin-top: 15px;">
-                    <p><strong>Mensaje:</strong></p>
-                    <p style="white-space: pre-wrap;">${message}</p>
+            <div style="background-color: ${theme.bgMain}; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 40px 0;">
+                <div style="background-color: ${theme.bgCard}; max-width: 600px; margin: 0 auto; padding: 30px; border-radius: 12px; border: 1px solid ${theme.border}; color: ${theme.textMain}; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);">
+                    
+                    ${logoHtml}
+                    
+                    <h2 style="color: ${theme.primary}; text-align: center; margin-top: 20px;">🚀 Nuevo Lead Recibido</h2>
+                    
+                    <div style="margin-top: 30px;">
+                        <p style="margin: 5px 0; color: ${theme.textSec}; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Cliente</p>
+                        <p style="margin: 0 0 15px 0; font-size: 18px; font-weight: bold;">${safeName}</p>
+                        
+                        <p style="margin: 5px 0; color: ${theme.textSec}; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Contacto</p>
+                        <p style="margin: 0 0 5px 0;">📧 <a href="mailto:${email}" style="color: ${theme.primary}; text-decoration: none;">${email}</a></p>
+                        <p style="margin: 0 0 15px 0;">📱 ${phone || 'No especificado'}</p>
+
+                        <p style="margin: 5px 0; color: ${theme.textSec}; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Asunto</p>
+                        <p style="margin: 0 0 15px 0;">${safeSubject}</p>
+                    </div>
+
+                    <div style="background-color: rgba(14, 165, 233, 0.1); padding: 20px; border-radius: 8px; border-left: 4px solid ${theme.primary}; margin-top: 20px;">
+                        <p style="margin: 0; color: ${theme.textSec}; font-size: 12px; margin-bottom: 5px;">Mensaje:</p>
+                        <p style="white-space: pre-wrap; margin: 0; font-size: 15px; line-height: 1.6;">${message}</p>
+                    </div>
                 </div>
             </div>
         `;
 
-        // 6. Enviar el correo al administrador
-        console.log('API Contact: Sending email to:', adminEmail);
+        // --- 2. HTML USUARIO (Confirmación Automática) ---
+        // Diseño visual alineado con la landing page (Dark Mode)
+        const userHtml = `
+            <div style="background-color: ${theme.bgMain}; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 40px 0;">
+                <div style="background-color: ${theme.bgCard}; max-width: 600px; margin: 0 auto; padding: 40px; border-radius: 12px; border: 1px solid ${theme.border}; color: ${theme.textMain}; text-align: center; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);">
+                    
+                    ${logoHtml}
 
-        await emailService.sendEmail(
-            adminEmail as string,
-            `🚀 Nuevo Contacto: ${name} - ${subject || "Web"}`,
-            adminHtml,
-            email // ReplyTo
-        );
+                    <h1 style="color: ${theme.textMain}; margin-top: 30px; font-size: 24px;">¡Gracias por contactarnos!</h1>
+                    
+                    <p style="color: ${theme.textSec}; font-size: 16px; line-height: 1.6; margin: 25px 0;">
+                        Hola <strong>${safeName}</strong>, hemos recibido tu mensaje correctamente. 
+                        Nos pondremos en contacto contigo muy pronto.
+                    </p>
 
-        console.log('[API Contact] Email successfully dispatched to admin.');
-        return NextResponse.json({ success: true, message: "Correo enviado con éxito" });
+                    ${footerHtml}
+                </div>
+            </div>
+        `;
+        // --- ENVIAR ---
+        await Promise.all([
+            emailService.sendEmail(adminEmail as string, `🚀 Lead KrouHub: ${safeName}`, adminHtml, email),
+            emailService.sendEmail(email, `👋 Recibimos tu mensaje - KrouHub`, userHtml)
+        ]);
+
+        return NextResponse.json({ success: true, message: "Enviado correctamente" });
 
     } catch (error: any) {
-        console.error("[API Contact] CATCH ERROR:", {
-            error: error.message,
-            stack: error.stack
-        });
-        return NextResponse.json(
-            {
-                error: error.message || "Error interno del servidor",
-                diagnostic: {
-                    message: error.message,
-                    code: error.code,
-                    stack: error.stack?.split('\n').slice(0, 3).join('\n')
-                }
-            },
-            { status: 500 }
-        );
+        console.error("Error en API Contact:", error);
+        return NextResponse.json({ error: error.message || "Error interno" }, { status: 500 });
     }
 }
