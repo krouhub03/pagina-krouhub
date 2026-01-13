@@ -132,7 +132,7 @@ const Navbar: React.FC = () => {
               </Link>
             ))}
             <Link
-              href="/contacto"
+              href="/servicios/#contactanos"
               onClick={() => setIsOpen(false)}
               className="text-lg text-cyan-400 font-bold"
             >
