@@ -16,22 +16,26 @@ export async function POST(request: Request) {
             );
         }
 
-        // 3. Verificar que las variables de entorno existan (o usar fallbacks)
-        const smtpUser = process.env.SMTP_USER || "admin@krouhub.com";
-        const smtpPass = process.env.SMTP_PASSWORD || process.env.SMTP_PASS || "2lN&Lpr6?|";
+        // 3. Verificar que las variables de entorno existan
+        const smtpUser = process.env.SMTP_USER;
+        const smtpPass = process.env.SMTP_PASSWORD || process.env.SMTP_PASS;
         const adminEmail = process.env.ADMIN_EMAIL || smtpUser;
 
-        console.log('API Contact Environment Check:', {
-            SMTP_USER: process.env.SMTP_USER ? 'Defined' : 'Using fallback',
-            SMTP_PASS: (process.env.SMTP_PASSWORD || process.env.SMTP_PASS) ? 'Defined' : 'Using fallback',
-            ADMIN_EMAIL: process.env.ADMIN_EMAIL ? 'Defined' : 'Using fallback'
+        console.log('[API Contact] Environment Check:', {
+            SMTP_USER: smtpUser ? 'Defined' : 'MISSING',
+            SMTP_PASS: smtpPass ? 'Defined' : 'MISSING',
+            ADMIN_EMAIL: process.env.ADMIN_EMAIL ? 'Defined' : (smtpUser ? 'Using fallback' : 'MISSING')
         });
 
-        // Ya no bloqueamos con 500 si faltan en process.env, porque tenemos fallbacks
-        // Pero logueamos una advertencia si no hay nada en absoluto (aunque pusimos fallbacks arriba)
         if (!smtpUser || !smtpPass) {
-            console.error('API Contact: Critical configuration missing.');
-            return NextResponse.json({ error: "Configuración crítica faltante" }, { status: 500 });
+            console.error('[API Contact] Critical Configuration Missing: SMTP_USER or SMTP_PASSWORD.');
+            return NextResponse.json(
+                {
+                    error: "Configuración del servidor incompleta",
+                    details: "Faltan variables de entorno SMTP en el servidor."
+                },
+                { status: 500 }
+            );
         }
 
         // 4. Instanciar tu servicio
