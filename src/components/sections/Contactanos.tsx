@@ -14,7 +14,7 @@ export default function Contactanos({ scrollProgress }: ContactanosProps) {
     const safeScroll = scrollProgress || fallbackScroll;
 
     // Sincronización de aparición (entre el 85% y 95% del scroll total)
-    const opacity = useTransform(safeScroll, [0.85, 0.95], [0, 1]);
+    const opacity = useTransform(safeScroll, [0.80, 0.90], [0, 1]);
     const yPos = useTransform(safeScroll, [0.85, 0.95], [50, 0]);
 
     return (

@@ -135,7 +135,7 @@ const HeroHome: React.FC = () => {
               className="flex flex-col sm:flex-row gap-4 w-full justify-center"
             >
               <motion.a
-                href="/contacto"
+                href="/servicios#contactanos"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
                 className="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] transition-all"
