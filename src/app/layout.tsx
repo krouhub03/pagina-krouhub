@@ -77,7 +77,7 @@ export default function RootLayout({
         <SpotlightBackground />
         <Header />
         {children}
-        <footer className="py-10 border-t border-white/5 text-center relative z-10">
+        <footer className="py-10 border-t border-white/5 text-center relative z-10 snap-start bg-[#020617]">
           <p className="text-gray-500 text-sm">
             © {new Date().getFullYear()} KrouHub Servicios Digitales.
           </p>
