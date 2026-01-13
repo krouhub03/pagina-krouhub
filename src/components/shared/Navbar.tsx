@@ -36,7 +36,6 @@ const Navbar: React.FC = () => {
 
   const navLinks: NavLink[] = [
     { name: 'Inicio', href: '/' },
-    { name: 'Proyectos', href: '/proyectos' },
     { name: 'Servicios', href: '/servicios' },
   ];
 
@@ -88,7 +87,7 @@ const Navbar: React.FC = () => {
             ))}
 
             <Link
-              href="/contacto"
+              href="/servicios/#contactanos"
               className="ml-4 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 px-5 py-2 rounded-full text-sm font-bold hover:bg-cyan-500 hover:text-white transition-all duration-300"
             >
               Contacto

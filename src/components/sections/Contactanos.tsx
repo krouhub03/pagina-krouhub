@@ -20,6 +20,7 @@ export default function Contactanos({ scrollProgress }: ContactanosProps) {
     return (
         <motion.section
             style={{ opacity: scrollProgress ? opacity : 1 }}
+            id="contactanos"
             className="py-20 lg:py-32 bg-transparent relative min-h-screen flex items-center overflow-visible snap-start"
         >
             {/* Luces de fondo sutiles (Cian y Púrpura) */}
