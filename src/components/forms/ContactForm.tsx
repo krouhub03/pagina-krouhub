@@ -28,6 +28,27 @@ export default function ContactForm() {
         setErrorMessage("");
 
         try {
+            // --- RECAPTCHA ENTERPRISE ---
+            const siteKey = "6Ldg3EgsAAAAAFMJ1c9b5fA-MswgA2EbKpyxnrps";
+
+            // Esperar a que grecaptcha esté listo
+            const token = await new Promise<string>((resolve, reject) => {
+                const grecaptcha = (window as any).grecaptcha;
+                if (!grecaptcha || !grecaptcha.enterprise) {
+                    reject(new Error("reCAPTCHA not loaded"));
+                    return;
+                }
+
+                grecaptcha.enterprise.ready(async () => {
+                    try {
+                        const token = await grecaptcha.enterprise.execute(siteKey, { action: 'submit' });
+                        resolve(token);
+                    } catch (err) {
+                        reject(err);
+                    }
+                });
+            });
+
             // AQUÍ ESTÁ LA CORRECCIÓN:
             // Convertimos tus datos (español) a lo que espera la API (inglés)
             const apiPayload = {
@@ -35,7 +56,8 @@ export default function ContactForm() {
                 email: formData.email,
                 phone: formData.telefono,
                 subject: formData.servicio,
-                message: formData.mensaje // Esto soluciona el error de "campo obligatorio"
+                message: formData.mensaje,
+                recaptchaToken: token // Enviamos el token para su verificación
             };
 
             const response = await fetch("/api/contact", {

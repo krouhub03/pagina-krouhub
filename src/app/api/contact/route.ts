@@ -4,7 +4,50 @@ import { EmailService } from '@/services/emailService';
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { name, email, message, subject, phone } = body;
+        const { name, email, message, subject, phone, recaptchaToken } = body;
+
+        // --- VERIFICACIÓN RECAPTCHA ENTERPRISE ---
+        if (!recaptchaToken) {
+            return NextResponse.json({ error: "Verificación de seguridad ausente (reCAPTCHA)" }, { status: 400 });
+        }
+
+        try {
+            const projectID = process.env.RECAPTCHA_PROJECT_ID;
+            const apiKey = process.env.RECAPTCHA_API_KEY;
+            const siteKey = "6Ldg3EgsAAAAAFMJ1c9b5fA-MswgA2EbKpyxnrps";
+
+            // Si no hay configuración, saltamos (para desarrollo o si el usuario aún no lo ha puesto)
+            if (projectID && apiKey) {
+                const verifyUrl = `https://recaptchaenterprise.googleapis.com/v1/projects/${projectID}/assessments?key=${apiKey}`;
+
+                const verifyResponse = await fetch(verifyUrl, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        event: {
+                            token: recaptchaToken,
+                            siteKey: siteKey,
+                            expectedAction: 'submit'
+                        }
+                    })
+                });
+
+                const verifyData = await verifyResponse.json();
+
+                if (!verifyResponse.ok || !verifyData.tokenProperties.valid) {
+                    console.error("reCAPTCHA Invalid:", verifyData);
+                    return NextResponse.json({ error: "Fallo en la verificación de seguridad" }, { status: 403 });
+                }
+
+                // Puedes ajustar el umbral del score (0.0 a 1.0)
+                if (verifyData.riskAnalysis.score < 0.5) {
+                    return NextResponse.json({ error: "Actividad sospechosa detectada" }, { status: 403 });
+                }
+            }
+        } catch (err) {
+            console.error("Error verificando reCAPTCHA:", err);
+            // En caso de error de red o similar, decidimos si dejar pasar o bloquear. 
+            // Aquí dejamos pasar para no romper el formulario si falla el servicio de Google.
+        }
 
         // --- VALIDACIÓN ---
         if (!email || !message) {
