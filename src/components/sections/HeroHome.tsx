@@ -64,6 +64,20 @@ const HeroHome: React.FC = () => {
       ref={containerRef}
       className="relative pt-1 min-h-screen overflow-hidden flex items-center justify-center group snap-start"
     >
+      {/* 0. Video Background (Local only) */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-slate-950/60 z-[1]" />
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover opacity-50"
+        >
+          <source src="/fondo.webm" type="video/webm" />
+        </video>
+      </div>
+
       {/* 1. Static Grid Background */}
       <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20" />
 
