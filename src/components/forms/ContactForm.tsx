@@ -60,7 +60,6 @@ export default function ContactForm() {
                 });
             });
 
-            // AQUÍ ESTÁ LA CORRECCIÓN:
             // Convertimos tus datos (español) a lo que espera la API (inglés)
             const apiPayload = {
                 name: formData.nombre,
