@@ -5,6 +5,7 @@ import Header from "../components/layout/Header";
 import SpotlightBackground from "../components/ui/SpotlightBackground";
 import SmoothScroller from "../components/ui/SmoothScroller";
 import GoogleAnalytics from "../components/analytics/GoogleAnalytics";
+import MetricoolTracker from "../components/analytics/Metricool";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -73,6 +74,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <GoogleAnalytics />
+        <MetricoolTracker />
         <SmoothScroller />
         <SpotlightBackground />
         <Header />
