@@ -195,7 +195,6 @@ export default function ContactForm() {
                     className="w-full bg-[#0B0F19] border border-white/10 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-white/20 transition-all text-sm appearance-none cursor-pointer"
                 >
                     <option>Desarrollo y Diseño Web</option>
-                    <option>Marketing y Growth</option>
                     <option>Automatizaciones</option>
                 </select>
             </div>

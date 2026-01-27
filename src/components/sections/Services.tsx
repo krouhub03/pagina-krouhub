@@ -33,15 +33,6 @@ const servicios: Servicio[] = [
     borderColor: "group-hover:border-cyan-500/50"
   },
   {
-    title: "Marketing Digital",
-    desc: "Estrategias de crecimiento basadas en datos reales.",
-    details: ["Campañas SEO & SEM", "Publicidad en Redes (Ads)", "Analítica Web", "Embudos de Venta"],
-    icon: BarChart3,
-    iconColor: "group-hover:text-purple-400",
-    iconBg: "group-hover:bg-purple-400/10",
-    borderColor: "group-hover:border-purple-500/50"
-  },
-  {
     title: "Automatizaciones",
     desc: "Tecnología que trabaja por ti 24/7.",
     details: ["Chatbots con IA", "Integraciones CRM", "Flujos de Email Marketing", "Optimización de procesos"],
@@ -82,7 +73,7 @@ const Servicios: React.FC = () => {
         </motion.div>
 
         {/* Grid de Servicios */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {servicios.map((servicio, index) => (
             <motion.div
               key={index}

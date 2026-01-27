@@ -6,6 +6,7 @@ import SpotlightBackground from "../components/ui/SpotlightBackground";
 import SmoothScroller from "../components/ui/SmoothScroller";
 import GoogleAnalytics from "../components/analytics/GoogleAnalytics";
 import MetricoolTracker from "../components/analytics/Metricool";
+import WhatsAppButton from "../components/shared/WhatsAppButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,8 +24,8 @@ export const metadata: Metadata = {
     default: "KrouHub | Servicios Digitales y Desarrollo Web",
     template: "%s | KrouHub",
   },
-  description: "Transformamos ideas en soluciones digitales. Desarrollo Web, Marketing Digital y Automatizaciones a medida para tu empresa.",
-  keywords: ["Desarrollo Web", "Marketing Digital", "Automatización", "SEO", "Diseño Web", "Colombia", "KrouHub"],
+  description: "Transformamos ideas en soluciones digitales. Desarrollo Web y Automatizaciones a medida para tu empresa.",
+  keywords: ["Desarrollo Web", "Automatización", "SEO", "Diseño Web", "Colombia", "KrouHub"],
   authors: [{ name: "KrouHub Team" }],
   creator: "BrianKrou",
   openGraph: {
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
     locale: "es_ES",
     url: "https://www.krouhub.com",
     title: "KrouHub | Servicios Digitales",
-    description: "Impulsa tu negocio con tecnología de vanguardia. Sitios web rápidos, marketing efectivo y automatización inteligente.",
+    description: "Impulsa tu negocio con tecnología de vanguardia. Sitios web rápidos y automatización inteligente.",
     siteName: "KrouHub",
     images: [
       {
@@ -46,7 +47,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "KrouHub | Servicios Digitales",
-    description: "Soluciones web y marketing digital para escalar tu negocio.",
+    description: "Soluciones web y automatizaciones para escalar tu negocio.",
     images: ["/og-image.jpg"],
   },
   robots: {
@@ -79,6 +80,7 @@ export default function RootLayout({
         <SpotlightBackground />
         <Header />
         {children}
+        <WhatsAppButton />
         <footer className="py-10 border-t border-white/5 text-center relative z-10 snap-start bg-[#020617]">
           <p className="text-gray-500 text-sm">
             © {new Date().getFullYear()} KrouHub Servicios Digitales.

@@ -14,7 +14,6 @@ export default function Page() {
       <main className="relative z-10">
         <HeroServices />
         <DesarrolloWeb />
-        <Marketing />
         <Automatizaciones />
         <Contactanos scrollProgress={scrollYProgress} />
       </main>
