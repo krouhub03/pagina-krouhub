@@ -30,7 +30,7 @@ const proyectos: Proyecto[] = [
     image: "/ingecivil-mantenimiento.webp",
     logo: "/ingecivil-mantenimiento.webp",
     desc: "Plataforma corporativa para servicios de ingeniería civil y mantenimiento industrial.",
-    tech: ["React", "SEO", "Business"],
+    tech: ["WordPress", "Corporativo"],
     color: "from-blue-600 to-cyan-500"
   },
   {
@@ -39,7 +39,7 @@ const proyectos: Proyecto[] = [
     image: "/Gardner-logo.webp",
     logo: "/Gardner-logo.webp",
     desc: "Portal educativo enfocado en la metodología Gardner para la primera infancia.",
-    tech: ["Next.js", "Education", "UI/UX"],
+    tech: ["WordPress", "Education"],
     color: "from-green-500 to-emerald-400"
   }
 ];
