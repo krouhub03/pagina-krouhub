@@ -6,6 +6,7 @@ import SpotlightBackground from "../components/ui/SpotlightBackground";
 import SmoothScroller from "../components/ui/SmoothScroller";
 import GoogleAnalytics from "../components/analytics/GoogleAnalytics";
 import MetricoolTracker from "../components/analytics/Metricool";
+import MetaPixel from "../components/analytics/MetaPixel";
 import WhatsAppButton from "../components/shared/WhatsAppButton";
 
 const geistSans = Geist({
@@ -76,6 +77,7 @@ export default function RootLayout({
       >
         <GoogleAnalytics />
         <MetricoolTracker />
+        <MetaPixel />
         <SmoothScroller />
         <SpotlightBackground />
         <Header />
