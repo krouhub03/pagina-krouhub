@@ -175,10 +175,10 @@ const HeroHome: React.FC = () => {
         style={{ opacity: opacityScroll }}
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-30"
+        className="absolute bottom-30 left-1/2 -translate-x-1/2 opacity-30"
       >
-        <div className="w-6 h-10 border-2 border-[#51e5f7] rounded-full flex justify-center p-1">
-          <div className="w-1 h-2 bg-white rounded-full" />
+        <div className="w-6 h-12 border-1 border-[#51e5f7] rounded-full flex justify-center p-2">
+          <div className="w-1 h-4 bg-[#51e5f7] animate-pulse rounded-full" />
         </div>
       </motion.div>
     </div>
