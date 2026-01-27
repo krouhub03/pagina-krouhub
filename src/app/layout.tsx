@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "../components/layout/Header";
@@ -70,7 +71,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
 
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -84,9 +85,15 @@ export default function RootLayout({
         {children}
         <WhatsAppButton />
         <footer className="py-10 border-t border-white/5 text-center relative z-10 snap-start bg-[#020617]">
-          <p className="text-gray-500 text-sm">
+          <p className="text-gray-500 text-sm mb-2">
             © {new Date().getFullYear()} KrouHub Servicios Digitales.
           </p>
+          <Link
+            href="/politica-de-privacidad"
+            className="text-gray-600 hover:text-cyan-500 text-xs transition-colors"
+          >
+            Política de Tratamiento de Datos Personales
+          </Link>
         </footer>
       </body>
     </html>
