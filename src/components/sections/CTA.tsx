@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Sparkles, ArrowRight } from "lucide-react";
+import { div } from "framer-motion/client";
 
 export default function CTA() {
     return (
@@ -36,18 +37,19 @@ export default function CTA() {
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                        <Link href="/servicios#contactanos" legacyBehavior>
-                            <a className="group relative px-8 py-4 bg-white text-slate-900 rounded-full font-bold text-lg shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transition-all transform hover:-translate-y-1 overflow-hidden">
-                                <span className="relative z-10 flex items-center gap-2">
-                                    Solicitar Cotización
-                                    <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                                </span>
-                                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
-                            </a>
+                        <Link
+                            href="/servicios#contactanos"
+                            className="group relative px-8 py-4 bg-white text-slate-900 rounded-full font-bold text-lg shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transition-all transform hover:-translate-y-1 overflow-hidden"
+                        >
+                            <span className="relative z-10 flex items-center gap-2">
+                                Solicitar Cotización
+                                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                            </span>
+                            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
                         </Link>
                     </div>
                 </motion.div>
-            </div>
+            </div   >
         </section>
     );
 }
