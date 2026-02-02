@@ -40,7 +40,7 @@ export default function ContactForm() {
 
         try {
             // --- RECAPTCHA ENTERPRISE ---
-            const siteKey = "6Ldg3EgsAAAAAFMJ1c9b5fA-MswgA2EbKpyxnrps";
+            const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
             // Esperar a que grecaptcha esté listo
             const token = await new Promise<string>((resolve, reject) => {
