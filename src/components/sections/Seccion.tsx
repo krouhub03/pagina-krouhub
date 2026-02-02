@@ -158,8 +158,7 @@ const Services: React.FC = () => {
         >
           <h3 className="text-3xl font-bold text-white mb-4">Dedicación a la Excelencia</h3>
           <p className="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed">
-            En KrouHub creemos en relaciones a largo plazo.
-            Nos enfocamos en entender tu negocio, optimizar procesos y entregar soluciones que superen expectativas, no solo que se vean bien.
+            En KrouHub creemos en relaciones a largo plazo. Nos enfocamos en entender tu negocio y optimizar tus procesos para entregar soluciones que impulsen tu crecimiento.
           </p>
         </motion.div>
       </motion.div>

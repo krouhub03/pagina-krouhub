@@ -106,11 +106,7 @@ const Servicios: React.FC = () => {
                 ))}
               </ul>
 
-              {/* Botón "Ver más" simulado con efecto de brillo */}
-              <div className={`flex items-center gap-2 text-sm font-semibold text-white/40 transition-all cursor-pointer ${servicio.iconColor} group-hover:text-white/70`}>
-                Saber más
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-2" />
-              </div>
+
 
               {/* Efecto de brillo interior */}
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-50 transition-opacity pointer-events-none" />

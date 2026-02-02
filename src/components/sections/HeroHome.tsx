@@ -140,8 +140,7 @@ const HeroHome: React.FC = () => {
               variants={itemVariants}
               className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
             >
-              Transformamos ideas complejas en productos digitales simples y elegantes.
-              Optimiza tu negocio con tecnología de vanguardia.
+              Transformamos ideas complejas en productos digitales elegantes y escalables.
             </motion.p>
 
             {/* Buttons */}
