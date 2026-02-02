@@ -123,7 +123,7 @@ export default function ContactForm() {
     return (
         <form
             onSubmit={handleSubmit}
-            className="relative bg-card/80 backdrop-blur-xl border border-border p-6 md:p-10 rounded-[24px] lg:rounded-[32px] space-y-4 md:space-y-5 shadow-xl"
+            className="relative bg-card/80 backdrop-blur-md border border-border p-6 md:p-10 rounded-[24px] lg:rounded-[32px] space-y-4 md:space-y-5 shadow-xl"
         >
             <Script
                 src="https://www.google.com/recaptcha/enterprise.js?render=6Ldg3EgsAAAAAFMJ1c9b5fA-MswgA2EbKpyxnrps"

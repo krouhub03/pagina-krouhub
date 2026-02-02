@@ -6,7 +6,7 @@ import Lenis from "lenis";
 const SmoothScroller = () => {
     useEffect(() => {
         const lenis = new Lenis({
-            duration: 1.0,
+            duration: 0.8,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Standard easeOutExpo
             orientation: "vertical",
             gestureOrientation: "vertical",

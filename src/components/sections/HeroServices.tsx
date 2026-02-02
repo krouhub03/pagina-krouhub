@@ -29,9 +29,9 @@ export default function HeroServices() {
   const y = useTransform(scrollYProgress, [0, 1], [0, -150]); // Reducido el desplazamiento
   const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
-  // Evitamos el scale en móviles muy pequeños para mantener legibilidad
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
-  const ySpring = useSpring(y, { stiffness: 80, damping: 25 });
+  // Simplificación de resortes para mejor respuesta
+  const scale = useTransform(scrollYProgress, [0, 0.4], [1, 0.98]);
+  const ySpring = useSpring(y, { stiffness: 100, damping: 30 });
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -120,7 +120,7 @@ export default function HeroServices() {
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-            className="w-12 h-12 rounded-2xl border border-slate-200 dark:border-white/10 flex items-center justify-center backdrop-blur-xl shadow-lg group-hover:border-cyan-500/50 transition-colors"
+            className="w-12 h-12 rounded-2xl border border-slate-200 dark:border-white/10 flex items-center justify-center backdrop-blur-md shadow-lg group-hover:border-cyan-500/50 transition-colors"
           >
             <ArrowDown size={20} />
           </motion.div>

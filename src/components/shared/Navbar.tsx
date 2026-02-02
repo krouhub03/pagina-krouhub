@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { motion, AnimatePresence, useScroll, useSpring, MotionValue } from 'framer-motion';
 import { ThemeToggle } from '../ui/ThemeToggle';
@@ -20,6 +21,8 @@ const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState<boolean>(false);
   const [mounted, setMounted] = useState(false);
   const { theme, resolvedTheme } = useTheme();
+  const pathname = usePathname();
+  const isHome = pathname === '/';
 
   useEffect(() => {
     setMounted(true);
@@ -63,9 +66,9 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className={`fixed top-0 z-[100] w-full transition-all duration-500 ${scrolled
-          ? "bg-background/80 backdrop-blur-lg py-2 border-b border-border shadow-sm"
-          : "bg-transparent py-6"
+      className={`fixed top-0 z-[100] w-full transition-all duration-500 ${(scrolled || !isHome || isOpen)
+        ? "bg-background py-2 border-b border-border shadow-sm"
+        : "bg-transparent py-6"
         }`}
     >
       {/* BARRA DE PROGRESO */}
@@ -135,20 +138,22 @@ const Navbar: React.FC = () => {
       </div>
 
       {/* MENÚ MÓVIL */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="absolute top-full left-0 w-full bg-background/95 backdrop-blur-xl border-b border-border flex flex-col p-8 space-y-6 md:hidden shadow-2xl overflow-hidden"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="absolute top-full left-0 w-full bg-background border-b border-border flex flex-col p-8 space-y-8 md:hidden shadow-3xl z-[110] min-h-[50vh]"
           >
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="text-2xl font-black text-foreground/70 hover:text-cyan-500 transition-colors"
+                className="text-3xl font-black text-foreground hover:text-cyan-500 transition-colors"
+                style={{ opacity: 1 }}
               >
                 {link.name}
               </Link>
@@ -156,7 +161,7 @@ const Navbar: React.FC = () => {
             <Link
               href="/servicios/#contactanos"
               onClick={() => setIsOpen(false)}
-              className="text-xl text-cyan-600 dark:text-cyan-400 font-black uppercase tracking-widest pt-4 border-t border-border"
+              className="text-2xl text-cyan-600 dark:text-cyan-400 font-black uppercase tracking-widest pt-6 border-t border-border"
             >
               Contacto
             </Link>
