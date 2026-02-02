@@ -79,7 +79,7 @@ const Services: React.FC = () => {
   return (
     <section
       ref={targetRef}
-      className="relative py-10 overflow-hidden min-h-screen snap-start flex flex-col justify-center"
+      className="relative py-20 overflow-hidden min-h-screen snap-start flex flex-col justify-center"
     >
       {/* Elementos decorativos de fondo con Parallax */}
       <motion.div
@@ -94,7 +94,7 @@ const Services: React.FC = () => {
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        viewport={{ once: false, amount: 0.3 }}
+        viewport={{ once: false, amount: 0.2 }}
         className="max-w-7xl mx-auto px-6 relative z-10"
       >
 
@@ -104,12 +104,12 @@ const Services: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={itemVariants}
-          className="text-center mb-12 md:mb-20"
+          className="text-center mb-16 md:mb-24"
         >
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6 transition-colors duration-500">
+          <h2 className="text-4xl md:text-6xl font-black text-foreground mb-6 tracking-tight transition-colors duration-500">
             ¿Por qué elegir <span className="text-cyan-600 dark:text-cyan-400">KrouHub</span>?
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg transition-colors duration-500">
+          <p className="text-muted-foreground max-w-2xl mx-auto text-lg md:text-xl transition-colors duration-500">
             Combinamos estrategia, diseño y tecnología para escalar tu negocio al siguiente nivel.
           </p>
         </motion.div>
@@ -120,24 +120,24 @@ const Services: React.FC = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8"
         >
           {features.map((item, index) => (
             <motion.div
               key={index}
               variants={itemVariants}
               whileHover={{ y: -12 }}
-              className="relative group p-10 rounded-3xl bg-card border border-border backdrop-blur-md hover:bg-accent/10 hover:border-border/50 hover:shadow-lg dark:hover:shadow-[0_15px_40px_rgba(0,255,255,0.1)] transition-all duration-500"
+              className="relative group p-8 md:p-10 rounded-3xl bg-card border border-border backdrop-blur-md hover:bg-accent/10 hover:border-border/50 hover:shadow-xl transition-all duration-500"
             >
-              {/* Número de fondo sutil */}
-              <span className="absolute top-4 right-8 text-7xl font-bold text-foreground/5 group-hover:text-cyan-500/20 transition-colors">
+              {/* Número de fondo sutil - Redimensionado para móvil */}
+              <span className="absolute top-4 right-6 text-6xl md:text-8xl font-black text-foreground/5 group-hover:text-cyan-500/20 transition-colors pointer-events-none">
                 {item.icon}
               </span>
 
               <h3 className="text-2xl font-bold text-foreground mb-4 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors duration-500">
                 {item.title}
               </h3>
-              <p className="text-muted-foreground leading-relaxed group-hover:text-foreground/80 transition-colors duration-500">
+              <p className="text-base md:text-lg text-muted-foreground leading-relaxed group-hover:text-foreground/80 transition-colors duration-500">
                 {item.desc}
               </p>
 
