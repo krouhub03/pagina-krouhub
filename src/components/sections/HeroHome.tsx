@@ -72,6 +72,7 @@ const HeroHome: React.FC = () => {
           muted
           loop
           playsInline
+          suppressHydrationWarning
           className="w-full h-full object-cover opacity-50"
         >
           <source src="/fondo.webm" type="video/webm" />

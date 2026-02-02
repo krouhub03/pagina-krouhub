@@ -1,22 +1,12 @@
-"use client";
-import { useScroll } from "framer-motion";
-import HeroServices from "@/components/sections/HeroServices";
-import DesarrolloWeb from "@/components/sections/DesarrolloWeb";
-import Marketing from "@/components/sections/Marketing";
-import Automatizaciones from "@/components/sections/Automatizaciones";
-import Contactanos from "@/components/sections/Contactanos";
+//src\app\servicios\page.tsx
+import { Metadata } from "next";
+import ServicesContent from "@/components/sections/ServicesContent";
+
+export const metadata: Metadata = {
+  title: "Nuestros Servicios | KrouHub",
+  description: "Explora nuestros servicios de Desarrollo Web, Marketing Digital y Automatización con Inteligencia Artificial.",
+};
 
 export default function Page() {
-  const { scrollYProgress } = useScroll();
-
-  return (
-    <div className="relative min-h-screen selection:bg-cyan-500/30">
-      <main className="relative z-10">
-        <HeroServices />
-        <DesarrolloWeb />
-        <Automatizaciones />
-        <Contactanos scrollProgress={scrollYProgress} />
-      </main>
-    </div>
-  );
+  return <ServicesContent />;
 }

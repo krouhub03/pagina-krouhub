@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
 import SpotlightBackground from "../components/ui/SpotlightBackground";
 import SmoothScroller from "../components/ui/SmoothScroller";
-import GoogleAnalytics from "../components/analytics/GoogleAnalytics";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import MetricoolTracker from "../components/analytics/Metricool";
 import MetaPixel from "../components/analytics/MetaPixel";
 import WhatsAppButton from "../components/shared/WhatsAppButton";
@@ -14,11 +14,13 @@ const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
-
+// eslint-disable-next-line
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+// metadatos globales de la pagina web SEO 
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.krouhub.com'),
@@ -27,7 +29,7 @@ export const metadata: Metadata = {
     template: "%s | KrouHub",
   },
   description: "Transformamos ideas en soluciones digitales. Desarrollo Web y Automatizaciones a medida para tu empresa.",
-  keywords: ["Desarrollo Web", "Automatización", "SEO", "Diseño Web", "Colombia", "KrouHub"],
+  keywords: ["Desarrollo Web", "Automatización", "SEO", "Paginas Web", "Colombia", "KrouHub"],
   authors: [{ name: "KrouHub Team" }],
   creator: "BrianKrou",
   openGraph: {
@@ -39,7 +41,7 @@ export const metadata: Metadata = {
     siteName: "KrouHub",
     images: [
       {
-        url: "/og-image.jpg", // Asegúrate de tener esta imagen en public/
+        url: "/seoGeneral.png", // Asegúrate de tener esta imagen en public/
         width: 1200,
         height: 630,
         alt: "KrouHub Servicios Digitales",
@@ -50,7 +52,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "KrouHub | Servicios Digitales",
     description: "Soluciones web y automatizaciones para escalar tu negocio.",
-    images: ["/og-image.jpg"],
+    images: ["/seoGeneral.png"],
   },
   robots: {
     index: true,
@@ -71,30 +73,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning>
 
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <GoogleAnalytics />
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || ""} />
         <MetricoolTracker />
         <MetaPixel />
         <SmoothScroller />
         <SpotlightBackground />
         <Header />
         {children}
+        <Footer />
         <WhatsAppButton />
-        <footer className="py-10 border-t border-white/5 text-center relative z-10 snap-start bg-[#020617]">
-          <p className="text-gray-500 text-sm mb-2">
-            © {new Date().getFullYear()} KrouHub Servicios Digitales.
-          </p>
-          <Link
-            href="/politica-de-privacidad"
-            className="text-gray-600 hover:text-cyan-500 text-xs transition-colors"
-          >
-            Política de Tratamiento de Datos Personales
-          </Link>
-        </footer>
       </body>
     </html>
   );
