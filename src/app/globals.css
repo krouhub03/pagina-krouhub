@@ -2,7 +2,7 @@
 
   :root {
     /* Light Mode (Gris Claro con Blanco) */
-    --background: #F3F4F6; /* Gray-100 (Gris Claro) */
+    --background: #f3f4f6; /* Gray-100 (Gris Claro) - Corregido a sólido */
     --foreground: #083153; /* Gray-900 (Texto Oscuro) */
     --card: #FFFFFF; /* White (Blanco) */
     --card-foreground: #111827;
@@ -21,6 +21,7 @@
     --border: #D1D5DB; /* Gray-300 (Más visible) */
     --input: #E5E7EB;
     --ring: #042a31;
+    --note: #111111;
   }
 
   [data-theme="dark"] {
@@ -45,6 +46,29 @@
     --input: #1e293b;
     --ring: #06b6d4;
   }
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-note: var(--note);
+}
 
 body {
   background: var(--background);
