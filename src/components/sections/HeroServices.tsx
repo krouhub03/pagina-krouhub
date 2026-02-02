@@ -1,111 +1,126 @@
 "use client";
-import { useEffect, useRef } from "react";
-import { motion, useTransform, useSpring, useScroll, useMotionValue, useMotionTemplate } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import {
+  motion,
+  useTransform,
+  useSpring,
+  useScroll,
+  useMotionValue,
+  useMotionTemplate
+} from "framer-motion";
 import { ArrowDown, Zap } from "lucide-react";
+import { useTheme } from "next-themes";
 
 export default function HeroServices() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMounted, setIsMounted] = useState(false);
+  const { theme } = useTheme();
 
-  // Scroll parallax
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: isMounted ? containerRef : undefined,
     offset: ["start start", "end start"],
   });
 
-  // Efectos de salida basados en el scroll
-  const y = useTransform(scrollYProgress, [0, 1], [0, -250]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.9]);
+  // Animaciones de scroll suavizadas para móvil
+  const y = useTransform(scrollYProgress, [0, 1], [0, -150]); // Reducido el desplazamiento
+  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
-  const ySpring = useSpring(y, { stiffness: 100, damping: 30 });
+  // Evitamos el scale en móviles muy pequeños para mantener legibilidad
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
+  const ySpring = useSpring(y, { stiffness: 80, damping: 25 });
 
-  // Spotlight gradient
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const { clientX, clientY } = e;
-      const { left, top } = containerRef.current?.getBoundingClientRect() || { left: 0, top: 0 };
-      mouseX.set(clientX - left);
-      mouseY.set(clientY - top);
+    if (!isMounted) return;
+
+    const handleMove = (x: number, y: number) => {
+      if (!containerRef.current) return;
+      const { left, top } = containerRef.current.getBoundingClientRect();
+      mouseX.set(x - left);
+      mouseY.set(y - top);
+    };
+
+    const handleMouseMove = (e: MouseEvent) => handleMove(e.clientX, e.clientY);
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        handleMove(e.touches[0].clientX, e.touches[0].clientY);
+      }
     };
 
     window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [mouseX, mouseY]);
+    window.addEventListener("touchmove", handleTouchMove);
 
-  const background = useMotionTemplate`radial-gradient(600px circle at ${mouseX}px ${mouseY}px, rgba(6, 182, 212, 0.10), transparent 80%)`;
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove);
+    };
+  }, [isMounted, mouseX, mouseY]);
+
+  const spotlightOpacity = theme === "dark" ? "0.15" : "0.08";
+  // Gradiente radial optimizado: más pequeño en móvil para no "lavar" el color de fondo
+  const background = useMotionTemplate`radial-gradient(clamp(250px, 60vw, 600px) circle at ${mouseX}px ${mouseY}px, rgba(6, 182, 212, ${spotlightOpacity}), transparent 85%)`;
+
+  if (!isMounted) {
+    return <section className="min-h-screen bg-background" />;
+  }
 
   return (
-    <section ref={containerRef} className="relative min-h-screen flex flex-col items-center justify-center bg-transparent pt-20 overflow-hidden snap-start">
-      {/* 0. Video Background (Local only) */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-slate-950/60 z-[1]" />
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          suppressHydrationWarning
-          className="w-full h-full object-cover opacity-50"
-        >
-          <source src="/fondo.webm" type="video/webm" />
-        </video>
-      </div>
+    <section
+      ref={containerRef}
+      className="relative min-h-[100dvh] flex flex-col items-center justify-center bg-background pt-20 pb-10 overflow-hidden transition-colors duration-500 px-6 snap-start"
+    >
+      {/* 1. Grid Background - Optimización de densidad */}
+      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,rgba(120,120,120,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(120,120,120,0.05)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f2937_0.5px,transparent_0.5px),linear-gradient(to_bottom,#1f2937_0.5px,transparent_0.5px)] bg-[size:3rem_3rem] md:bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_100%_100%_at_50%_0%,#000_60%,transparent_100%)] opacity-50" />
 
-      {/* 1. Static Grid Background */}
-      <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20" />
+      {/* 2. Spotlight */}
+      <motion.div className="absolute inset-0 z-0 pointer-events-none" style={{ background }} />
 
-      {/* 2. Dynamic Spotlight Effect */}
-      <motion.div
-        className="absolute inset-0 z-0 opacity-100 transition-opacity duration-300 pointer-events-none"
-        style={{ background }}
-      />
-
-      {/* Orbes Decorativos Dinámicos */}
-      <motion.div
-        animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
-        transition={{ duration: 10, repeat: Infinity }}
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[500px] bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none"
-      />
-
+      {/* 3. Contenido Principal */}
       <motion.div
         style={{ y: ySpring, opacity, scale }}
-        className="relative z-10 px-6 max-w-5xl mx-auto text-center"
+        className="relative z-10 w-full max-w-5xl mx-auto text-center flex flex-col items-center"
       >
+        {/* Badge */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex justify-center mb-8"
+          className="mb-6 md:mb-8"
         >
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm font-medium uppercase backdrop-blur-sm">
-            <Zap size={14} className="fill-cyan-400" />
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-600 dark:text-cyan-400 text-[11px] md:text-xs font-bold uppercase tracking-widest backdrop-blur-sm">
+            <Zap size={14} className="fill-current" />
             Ingeniería & Estrategia
           </span>
         </motion.div>
 
-        <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight leading-[1.1] mb-8">
-          Todo lo que necesitas para <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 animate-gradient">
+        {/* Título - Tamaños corregidos para evitar cortes en móviles pequeños (320px) */}
+        <h1 className="text-[2.6rem] leading-[1.1] sm:text-5xl md:text-7xl lg:text-8xl font-black text-foreground tracking-tight mb-6 md:mb-8 max-w-[18ch] mx-auto">
+          Todo lo que necesitas para <br className="hidden sm:block" />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 dark:from-cyan-400 dark:via-blue-500 dark:to-purple-500 pb-2">
             dominar el entorno digital
           </span>
         </h1>
 
-        <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-12">
+        {/* Descripción */}
+        <p className="text-base md:text-xl text-muted-foreground max-w-[90%] md:max-w-2xl mx-auto mb-10 md:mb-14 font-medium md:font-light leading-relaxed transition-colors duration-500">
           Fusionamos desarrollo a medida con estrategias de crecimiento para crear ecosistemas que escalan por sí solos.
         </p>
 
         {/* Botón Explorar */}
         <motion.a
           href="#contenido-servicios"
-          className="inline-flex flex-col items-center gap-2 text-gray-500 hover:text-cyan-400 transition-colors group"
+          className="inline-flex flex-col items-center gap-4 text-slate-500 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all group"
         >
-          <span className="text-sm font-medium">Desliza para descubrir</span>
+          <span className="text-[10px] font-bold uppercase tracking-[0.3em]">Explorar Catálogo</span>
           <motion.div
-            animate={{ y: [0, 5, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center bg-white/5"
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+            className="w-12 h-12 rounded-2xl border border-slate-200 dark:border-white/10 flex items-center justify-center backdrop-blur-xl shadow-lg group-hover:border-cyan-500/50 transition-colors"
           >
             <ArrowDown size={20} />
           </motion.div>

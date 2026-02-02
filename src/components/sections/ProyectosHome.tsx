@@ -68,10 +68,10 @@ const Proyectos: React.FC = () => {
           <span className="text-[10px] uppercase tracking-[0.3em] text-cyan-400 font-semibold bg-cyan-400/10 px-3 py-1 rounded-full border border-cyan-400/20 mb-3 inline-block">
             Portfolio
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white via-cyan-100 to-white">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-2 transition-colors duration-500">
             Proyectos Destacados
           </h2>
-          <p className="text-gray-400 text-sm max-w-xl mx-auto">
+          <p className="text-muted-foreground text-sm max-w-xl mx-auto transition-colors duration-500">
             Soluciones digitales a medida con diseño de alto impacto.
           </p>
         </motion.div>
@@ -87,7 +87,7 @@ const Proyectos: React.FC = () => {
               transition={{ delay: index * 0.1 }}
               className="group relative flex flex-col"
             >
-              <div className="relative rounded-2xl bg-white/5 border border-white/10 overflow-hidden backdrop-blur-sm flex flex-col h-full transition-all duration-500 hover:border-cyan-400/50">
+              <div className="relative rounded-2xl bg-card border border-border overflow-hidden backdrop-blur-sm flex flex-col h-full transition-all duration-500 hover:border-cyan-400/50 shadow-sm hover:shadow-lg">
 
                 {/* Browser Mockup - Altura fija reducida */}
                 <div className="relative aspect-video overflow-hidden border-b border-white/10 bg-gray-900">
@@ -119,11 +119,11 @@ const Proyectos: React.FC = () => {
                     </div>
                   </div>
 
-                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
+                  <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors duration-500">
                     {proyecto.title}
                   </h3>
 
-                  <p className="text-gray-400 text-xs mb-4 line-clamp-2">
+                  <p className="text-muted-foreground text-xs mb-4 line-clamp-2 transition-colors duration-500">
                     {proyecto.desc}
                   </p>
 
@@ -131,7 +131,7 @@ const Proyectos: React.FC = () => {
                     <motion.a
                       href={proyecto.url}
                       target="_blank"
-                      className="inline-flex items-center justify-between w-full py-2.5 px-4 bg-white/5 hover:bg-cyan-400/10 rounded-xl border border-white/10 text-xs text-white font-medium transition-all"
+                      className="inline-flex items-center justify-between w-full py-2.5 px-4 bg-background hover:bg-accent rounded-xl border border-border text-xs text-foreground font-medium transition-all"
                     >
                       Ver Proyecto
                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

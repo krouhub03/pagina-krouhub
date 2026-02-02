@@ -27,9 +27,9 @@ const SpotlightBackground: React.FC = () => {
     const background = useMotionTemplate`radial-gradient(600px circle at ${mouseX}px ${mouseY}px, rgba(6, 182, 212, 0.10), transparent 80%)`;
 
     return (
-        <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#030712]">
+        <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-background transition-colors duration-300">
             {/* 1. Static Grid Background */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-[0.15]" />
 
             {/* 2. Dynamic Spotlight Effect */}
             <motion.div

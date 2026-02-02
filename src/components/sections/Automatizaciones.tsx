@@ -41,14 +41,14 @@ function Automatizaciones() {
                             <Cpu size={14} className="animate-pulse" /> Automatizaciónes Inteligentes
                         </span>
 
-                        <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                        <h2 className="text-4xl md:text-6xl font-bold text-foreground mb-6 leading-tight transition-colors duration-500">
                             Escala sin <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600 dark:from-amber-400 dark:to-orange-500">
                                 Fronteras
                             </span>
                         </h2>
 
-                        <p className="text-gray-400 text-sm md:text-lg mb-8 md:mb-10 leading-relaxed max-w-lg mx-auto md:mx-0">
+                        <p className="text-muted-foreground text-sm md:text-lg mb-8 md:mb-10 leading-relaxed max-w-lg mx-auto md:mx-0 transition-colors duration-500">
                             Sistemas que trabajan mientras tú descansas. Automatizamos procesos críticos para liberar tu tiempo y maximizar tu rentabilidad.
                         </p>
 
@@ -59,11 +59,11 @@ function Automatizaciones() {
                                     initial={{ opacity: 0, scale: 0.9 }}
                                     whileInView={{ opacity: 1, scale: 1 }}
                                     transition={{ delay: i * 0.1 }}
-                                    className="p-4 md:p-5 rounded-xl bg-[#0B0F19]/40 border border-white/5 backdrop-blur-xl hover:border-amber-500/20 transition-colors"
+                                    className="p-4 md:p-5 rounded-xl bg-card/40 border border-border backdrop-blur-xl hover:border-amber-500/20 transition-all"
                                 >
-                                    <item.icon className="text-amber-400 mb-2" size={18} />
-                                    <h3 className="font-bold text-white text-xs md:text-sm mb-1">{item.titulo}</h3>
-                                    <p className="hidden md:block text-[11px] text-gray-500">{item.desc}</p>
+                                    <item.icon className="text-amber-600 dark:text-amber-400 mb-2" size={18} />
+                                    <h3 className="font-bold text-foreground text-xs md:text-sm mb-1 transition-colors duration-500">{item.titulo}</h3>
+                                    <p className="hidden md:block text-[11px] text-muted-foreground transition-colors duration-500">{item.desc}</p>
                                 </motion.div>
                             ))}
                         </div>
@@ -71,22 +71,22 @@ function Automatizaciones() {
 
                     {/* TARJETA VISUAL */}
                     <div className="w-full md:w-1/2 relative flex justify-center items-center mt-8 md:mt-0">
-                        <div className="relative bg-[#0B0F19]/80 p-10 md:p-14 rounded-[30px] md:rounded-[40px] border border-amber-500/10 backdrop-blur-3xl shadow-2xl overflow-hidden group">
+                        <div className="relative bg-card/80 p-10 md:p-14 rounded-[30px] md:rounded-[40px] border border-amber-500/10 backdrop-blur-3xl shadow-2xl overflow-hidden group transition-colors duration-500">
                             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none" />
 
                             <motion.div
                                 animate={{ y: [0, -10, 0] }}
                                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                                className="w-20 h-20 md:w-28 md:h-28 bg-amber-500/10 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-amber-500/20 text-amber-400 shadow-[0_0_30px_rgba(245,158,11,0.1)]"
+                                className="w-20 h-20 md:w-28 md:h-28 bg-amber-500/10 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-amber-500/20 text-amber-500 dark:text-amber-400 shadow-[0_0_30px_rgba(245,158,11,0.1)]"
                             >
                                 <Bot size={isMobile ? 38 : 54} />
                             </motion.div>
 
-                            <div className="text-center relative z-10">
-                                <p className="text-white font-bold text-xl md:text-2xl mb-2">Sincronía Total</p>
+                            <div className="text-center relative z-10 transition-colors duration-500">
+                                <p className="text-foreground font-bold text-xl md:text-2xl mb-2">Sincronía Total</p>
                                 <div className="flex items-center justify-center gap-2">
                                     <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                                    <p className="text-amber-400/60 text-[10px] font-mono tracking-widest uppercase italic">IA Core Optimized</p>
+                                    <p className="text-amber-600/60 dark:text-amber-400/60 text-[10px] font-mono tracking-widest uppercase italic">IA Core Optimized</p>
                                 </div>
                             </div>
                         </div>

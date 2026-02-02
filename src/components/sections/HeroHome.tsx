@@ -64,9 +64,9 @@ const HeroHome: React.FC = () => {
       ref={containerRef}
       className="relative pt-1 min-h-screen overflow-hidden flex items-center justify-center group snap-start"
     >
-      {/* 0. Video Background (Local only) */}
+      {/* 0. Video Background (Local only) 
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-slate-950/60 z-[1]" />
+        <div className="absolute inset-0 bg-background/80 dark:bg-neutral-950 z-[1] transition-colors duration-500" />
         <video
           autoPlay
           muted
@@ -77,7 +77,7 @@ const HeroHome: React.FC = () => {
         >
           <source src="/fondo.webm" type="video/webm" />
         </video>
-      </div>
+      </div>*/}
 
       {/* 1. Static Grid Background */}
       <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20" />
@@ -119,7 +119,7 @@ const HeroHome: React.FC = () => {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
               </span>
-              <span className="text-xs font-semibold text-cyan-300 tracking-wider uppercase">
+              <span className="text-xs font-semibold text-primary tracking-wider uppercase">
                 Soluciones Digitales de Próxima Generación
               </span>
             </motion.div>
@@ -127,7 +127,7 @@ const HeroHome: React.FC = () => {
             {/* Title */}
             <motion.h1
               variants={itemVariants}
-              className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tight leading-[1.05] mb-4 md:mb-6"
+              className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-foreground tracking-tight leading-[1.05] mb-4 md:mb-6"
             >
               Impulsamos tu <br />
               <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
@@ -138,7 +138,7 @@ const HeroHome: React.FC = () => {
             {/* Description */}
             <motion.p
               variants={itemVariants}
-              className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
+              className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
             >
               Transformamos ideas complejas en productos digitales elegantes y escalables.
             </motion.p>
@@ -161,7 +161,7 @@ const HeroHome: React.FC = () => {
                 href="/servicios"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
-                className="px-8 py-4 border border-white/20 text-white font-semibold rounded-xl backdrop-blur-md transition-all hover:bg-white/5"
+                className="px-8 py-4 border border-border text-foreground font-semibold rounded-xl backdrop-blur-md transition-all hover:bg-black/5 dark:hover:bg-white/5"
               >
                 Nuestros Servicios
               </motion.a>

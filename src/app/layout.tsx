@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "../components/layout/Header";
+import { ThemeProvider } from "../components/providers/ThemeProvider";
 import Footer from "../components/layout/Footer";
 import SpotlightBackground from "../components/ui/SpotlightBackground";
 import SmoothScroller from "../components/ui/SmoothScroller";
@@ -78,15 +79,22 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || ""} />
-        <MetricoolTracker />
-        <MetaPixel />
-        <SmoothScroller />
-        <SpotlightBackground />
-        <Header />
-        {children}
-        <Footer />
-        <WhatsAppButton />
+        <ThemeProvider
+          attribute="data-theme"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || ""} />
+          <MetricoolTracker />
+          <MetaPixel />
+          <SmoothScroller />
+          <SpotlightBackground />
+          <Header />
+          {children}
+          <Footer />
+          <WhatsAppButton />
+        </ThemeProvider>
       </body>
     </html>
   );

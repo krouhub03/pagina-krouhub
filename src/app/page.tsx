@@ -14,12 +14,9 @@ import CTA from "@/components/sections/CTA";
  */
 const Home: React.FC = () => {
   return (
-    <div className="relative min-h-screen selection:bg-cyan-500/30">
+    <div className="relative min-h-screen">
 
-      {/* 1. Navbar */}
-
-
-      {/* 2. Hero */}
+      {/* 1. Hero */}
       <HeroHome />
 
       <main className="relative z-10">

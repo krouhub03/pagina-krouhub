@@ -1,9 +1,50 @@
 @import "tailwindcss";
 
-:root {
-  --background: #020617;
-  --foreground: #ededed;
-}
+  :root {
+    /* Light Mode (Gris Claro con Blanco) */
+    --background: #F3F4F6; /* Gray-100 (Gris Claro) */
+    --foreground: #083153; /* Gray-900 (Texto Oscuro) */
+    --card: #FFFFFF; /* White (Blanco) */
+    --card-foreground: #111827;
+    --popover: #FFFFFF;
+    --popover-foreground: #111827;
+    --primary: #184d57;
+    --primary-foreground: #ffffff;
+    --secondary: #E5E7EB; /* Gray-200 */
+    --secondary-foreground: #1f293b;
+    --muted: #F3F4F6;
+    --muted-foreground: #6B7280;
+    --accent: #FFFFFF;
+    --accent-foreground: #1f293b;
+    --destructive: #ef4444;
+    --destructive-foreground: #fafafa;
+    --border: #D1D5DB; /* Gray-300 (Más visible) */
+    --input: #E5E7EB;
+    --ring: #042a31;
+  }
+
+  [data-theme="dark"] {
+    /* Dark Mode (Original Blue/Navy) */
+    --background: #030314;
+    --foreground: #ededed;
+    --card: #182747;
+    --card-foreground: #ededed;
+    --popover: #0a0f1a;
+    --popover-foreground: #ededed;
+    --primary: #06b6d4;
+    --primary-foreground: #ffffff;
+    --secondary: #0f172a;
+    --secondary-foreground: #ededed;
+    --muted: #1e293b;
+    --muted-foreground: #94a3b8;
+    --accent: #1e293b;
+    --accent-foreground: #ededed;
+    --destructive: #ef4444;
+    --destructive-foreground: #fafafa;
+    --border: #1e293b;
+    --input: #1e293b;
+    --ring: #06b6d4;
+  }
 
 body {
   background: var(--background);
@@ -17,7 +58,7 @@ html {
 
 @media (min-width: 768px) {
   html {
-    scroll-snap-type: y mandatory;
+    scroll-snap-type: y proximity;
   }
 }
 

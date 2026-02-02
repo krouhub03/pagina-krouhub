@@ -64,7 +64,7 @@ const Servicios: React.FC = () => {
           <span className="text-cyan-500 font-semibold tracking-wider uppercase text-sm mb-4 block">
             Nuestros Servicios
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6">
             Soluciones digitales diseñadas para <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
               escalar tu negocio
@@ -81,26 +81,26 @@ const Servicios: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.2 }}
-              className={`group relative p-8 rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-sm transition-all duration-300 hover:-translate-y-3 hover:shadow-[0_15px_40px_rgba(0,255,255,0.1)] ${servicio.borderColor}`}
+              className={`group relative p-8 rounded-3xl border border-border bg-card/60 backdrop-blur-sm transition-all duration-300 hover:-translate-y-3 hover:shadow-lg dark:hover:shadow-[0_15px_40px_rgba(0,255,255,0.1)] ${servicio.borderColor}`}
             >
               {/* Icono Principal con glow suave */}
-              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-8 border border-white/10 transition-all duration-300 text-gray-500 bg-white/5 ${servicio.iconBg} ${servicio.iconColor} group-hover:shadow-[0_0_20px_rgba(0,255,255,0.2)]`}>
+              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-8 border border-border transition-all duration-300 text-muted-foreground bg-accent/50 ${servicio.iconBg} ${servicio.iconColor} group-hover:shadow-[0_0_20px_rgba(0,255,255,0.2)]`}>
                 <servicio.icon size={28} strokeWidth={1.5} />
               </div>
 
-              <h3 className="text-2xl font-bold text-white mb-3">
+              <h3 className="text-2xl font-bold text-foreground mb-3">
                 {servicio.title}
               </h3>
 
-              <p className="text-gray-400 mb-8 leading-relaxed">
+              <p className="text-muted-foreground mb-8 leading-relaxed">
                 {servicio.desc}
               </p>
 
               {/* Lista de características */}
               <ul className="space-y-3 mb-8">
                 {servicio.details.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-gray-300">
-                    <CheckCircle2 className="w-5 h-5 text-gray-600 shrink-0 mt-[1px] group-hover:text-gray-400 transition-colors" />
+                  <li key={i} className="flex items-start gap-3 text-sm text-foreground/80">
+                    <CheckCircle2 className="w-5 h-5 text-muted-foreground shrink-0 mt-[1px] group-hover:text-primary transition-colors" />
                     {item}
                   </li>
                 ))}

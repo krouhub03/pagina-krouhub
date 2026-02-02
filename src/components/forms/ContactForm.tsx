@@ -101,7 +101,7 @@ export default function ContactForm() {
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-[#0B0F19]/80 backdrop-blur-3xl border border-cyan-500/20 p-10 rounded-[32px] text-center"
+                className="bg-card/80 backdrop-blur-3xl border border-border p-10 rounded-[32px] text-center"
             >
                 <div className="w-20 h-20 bg-cyan-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
                     <CheckCircle2 className="text-cyan-400" size={40} />
@@ -123,14 +123,14 @@ export default function ContactForm() {
     return (
         <form
             onSubmit={handleSubmit}
-            className="relative bg-[#0B0F19]/80 backdrop-blur-3xl border border-white/10 p-6 md:p-10 rounded-[24px] lg:rounded-[32px] space-y-4 md:space-y-5 shadow-xl"
+            className="relative bg-card/80 backdrop-blur-xl border border-border p-6 md:p-10 rounded-[24px] lg:rounded-[32px] space-y-4 md:space-y-5 shadow-xl"
         >
             <Script
                 src="https://www.google.com/recaptcha/enterprise.js?render=6Ldg3EgsAAAAAFMJ1c9b5fA-MswgA2EbKpyxnrps"
                 strategy="afterInteractive"
             />
             {status === "error" && (
-                <div className="bg-red-500/10 border border-red-500/20 p-4 rounded-xl flex items-center gap-3 text-red-400 text-sm">
+                <div className="bg-destructive/10 border border-destructive/20 p-4 rounded-xl flex items-center gap-3 text-destructive text-sm">
                     <AlertCircle size={18} />
                     <span>{errorMessage}</span>
                 </div>
@@ -138,9 +138,9 @@ export default function ContactForm() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
                 <div className="space-y-1.5">
-                    <label className="text-[9px] lg:text-[10px] font-mono text-gray-500 uppercase tracking-widest ml-1">Nombre</label>
+                    <label className="text-[9px] lg:text-[10px] font-mono text-muted-foreground uppercase tracking-widest ml-1">Nombre</label>
                     <div className="relative group">
-                        <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-cyan-400 transition-colors" size={16} />
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-cyan-500 transition-colors" size={16} />
                         <input
                             required
                             type="text"
@@ -148,15 +148,15 @@ export default function ContactForm() {
                             value={formData.nombre}
                             onChange={handleChange}
                             placeholder="Tu nombre"
-                            className="w-full bg-white/[0.03] border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-cyan-500/40 transition-all text-sm"
+                            className="w-full bg-background/50 border border-border rounded-xl py-3 pl-11 pr-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-cyan-500/40 transition-all text-sm"
                         />
                     </div>
                 </div>
 
                 <div className="space-y-1.5">
-                    <label className="text-[9px] lg:text-[10px] font-mono text-gray-500 uppercase tracking-widest ml-1">Teléfono</label>
+                    <label className="text-[9px] lg:text-[10px] font-mono text-muted-foreground uppercase tracking-widest ml-1">Teléfono</label>
                     <div className="relative group">
-                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-cyan-400 transition-colors" size={16} />
+                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-cyan-500 transition-colors" size={16} />
                         <input
                             required
                             type="tel"
@@ -164,16 +164,16 @@ export default function ContactForm() {
                             value={formData.telefono}
                             onChange={handleChange}
                             placeholder="+34..."
-                            className="w-full bg-white/[0.03] border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-cyan-500/40 transition-all text-sm"
+                            className="w-full bg-background/50 border border-border rounded-xl py-3 pl-11 pr-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-cyan-500/40 transition-all text-sm"
                         />
                     </div>
                 </div>
             </div>
 
             <div className="space-y-1.5">
-                <label className="text-[9px] lg:text-[10px] font-mono text-gray-500 uppercase tracking-widest ml-1">Email</label>
+                <label className="text-[9px] lg:text-[10px] font-mono text-muted-foreground uppercase tracking-widest ml-1">Email</label>
                 <div className="relative group">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-purple-400 transition-colors" size={16} />
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-purple-500 transition-colors" size={16} />
                     <input
                         required
                         type="email"
@@ -181,18 +181,18 @@ export default function ContactForm() {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="email@empresa.com"
-                        className="w-full bg-white/[0.03] border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-purple-500/40 transition-all text-sm"
+                        className="w-full bg-background/50 border border-border rounded-xl py-3 pl-11 pr-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-purple-500/40 transition-all text-sm"
                     />
                 </div>
             </div>
 
             <div className="space-y-1.5">
-                <label className="text-[9px] lg:text-[10px] font-mono text-gray-500 uppercase tracking-widest ml-1">¿Qué necesitas?</label>
+                <label className="text-[9px] lg:text-[10px] font-mono text-muted-foreground uppercase tracking-widest ml-1">¿Qué necesitas?</label>
                 <select
                     name="servicio"
                     value={formData.servicio}
                     onChange={handleChange}
-                    className="w-full bg-[#0B0F19] border border-white/10 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-white/20 transition-all text-sm appearance-none cursor-pointer"
+                    className="w-full bg-background/50 border border-border rounded-xl py-3 px-4 text-foreground focus:outline-none focus:border-border transition-all text-sm appearance-none cursor-pointer"
                 >
                     <option>Desarrollo y Diseño Web</option>
                     <option>Automatizaciones</option>
@@ -200,9 +200,9 @@ export default function ContactForm() {
             </div>
 
             <div className="space-y-1.5">
-                <label className="text-[9px] lg:text-[10px] font-mono text-gray-500 uppercase tracking-widest ml-1">Mensaje</label>
+                <label className="text-[9px] lg:text-[10px] font-mono text-muted-foreground uppercase tracking-widest ml-1">Mensaje</label>
                 <div className="relative group">
-                    <MessageSquare className="absolute left-4 top-3 text-gray-600 group-focus-within:text-white transition-colors" size={16} />
+                    <MessageSquare className="absolute left-4 top-3 text-muted-foreground group-focus-within:text-foreground transition-colors" size={16} />
                     <textarea
                         required
                         name="mensaje"
@@ -210,7 +210,7 @@ export default function ContactForm() {
                         onChange={handleChange}
                         rows={4}
                         placeholder="Cuéntanos un poco..."
-                        className="w-full bg-white/[0.03] border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-white/20 transition-all resize-none text-sm"
+                        className="w-full bg-background/50 border border-border rounded-xl py-3 pl-11 pr-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-border transition-all resize-none text-sm"
                     ></textarea>
                 </div>
             </div>
@@ -222,16 +222,16 @@ export default function ContactForm() {
                 type="submit"
                 className="w-full bg-gradient-to-r from-cyan-600 to-indigo-600 p-[1px] rounded-xl overflow-hidden mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-                <div className="w-full h-full bg-[#0B0F19]/90 py-3.5 rounded-[11px] flex items-center justify-center gap-2">
+                <div className="w-full h-full bg-foreground/90 dark:bg-[#0B0F19]/90 py-3.5 rounded-[11px] flex items-center justify-center gap-2">
                     {status === "loading" ? (
                         <>
-                            <Loader2 size={16} className="text-white animate-spin" />
-                            <span className="text-white font-bold text-sm tracking-wide">Enviando...</span>
+                            <Loader2 size={16} className="text-background dark:text-white animate-spin" />
+                            <span className="text-background dark:text-white font-bold text-sm tracking-wide">Enviando...</span>
                         </>
                     ) : (
                         <>
-                            <span className="text-white font-bold text-sm tracking-wide">Comenzar Ahora</span>
-                            <Send size={16} className="text-white" />
+                            <span className="text-background dark:text-white font-bold text-sm tracking-wide">Comenzar Ahora</span>
+                            <Send size={16} className="text-background dark:text-white" />
                         </>
                     )}
                 </div>

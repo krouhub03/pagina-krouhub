@@ -72,10 +72,10 @@ const Proceso: React.FC = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6 transition-colors duration-500">
             Tu proyecto, tu ritmo
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">
+          <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed transition-colors duration-500">
             He diseñado un proceso sin complicaciones donde tú tienes el control. Avanzamos a tu velocidad, con total tranquilidad.
           </p>
         </motion.div>
@@ -91,23 +91,23 @@ const Proceso: React.FC = () => {
               transition={{ delay: index * 0.1 }}
               className={`p-6 rounded-3xl border backdrop-blur-md transition-all duration-300 group ${paso.num === "03"
                 ? "bg-cyan-500/10 border-cyan-500/40 shadow-[0_0_25px_rgba(6,182,212,0.2)] hover:shadow-[0_0_35px_rgba(6,182,212,0.3)]"
-                : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 hover:shadow-[0_0_15px_rgba(0,255,255,0.1)]"
+                : "bg-card border-border hover:bg-accent/10 hover:border-border/50 hover:shadow-lg dark:hover:shadow-[0_0_15px_rgba(0,255,255,0.1)]"
                 }`}
             >
               <div className="flex justify-between items-start mb-6">
                 {/* Icono dinámico */}
-                <div className={`${paso.num === "03" ? "text-cyan-400" : "text-gray-400 group-hover:text-cyan-400"} transition-colors duration-300`}>
+                <div className={`${paso.num === "03" ? "text-cyan-500" : "text-muted-foreground group-hover:text-cyan-500"} transition-colors duration-300`}>
                   <paso.icon size={32} strokeWidth={1.5} />
                 </div>
-                <span className={`text-xl font-black ${paso.num === "03" ? "text-cyan-400/30" : "text-white/10"}`}>
+                <span className={`text-xl font-black ${paso.num === "03" ? "text-cyan-500/30" : "text-foreground/10"}`}>
                   {paso.num}
                 </span>
               </div>
 
-              <h3 className={`text-lg font-bold mb-3 ${paso.num === "03" ? "text-cyan-400" : "text-white group-hover:text-cyan-400"} transition-colors`}>
+              <h3 className={`text-lg font-bold mb-3 ${paso.num === "03" ? "text-cyan-600 dark:text-cyan-400" : "text-foreground group-hover:text-cyan-600 dark:group-hover:text-cyan-400"} transition-colors duration-500`}>
                 {paso.title}
               </h3>
-              <p className="text-gray-400 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">
+              <p className="text-muted-foreground text-sm leading-relaxed group-hover:text-foreground/80 transition-colors duration-500">
                 {paso.desc}
               </p>
 

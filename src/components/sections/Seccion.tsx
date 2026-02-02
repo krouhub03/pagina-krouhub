@@ -106,10 +106,10 @@ const Services: React.FC = () => {
           variants={itemVariants}
           className="text-center mb-12 md:mb-20"
         >
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white mb-6">
-            ¿Por qué elegir <span className="text-cyan-400">KrouHub</span>?
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6 transition-colors duration-500">
+            ¿Por qué elegir <span className="text-cyan-600 dark:text-cyan-400">KrouHub</span>?
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+          <p className="text-muted-foreground max-w-2xl mx-auto text-lg transition-colors duration-500">
             Combinamos estrategia, diseño y tecnología para escalar tu negocio al siguiente nivel.
           </p>
         </motion.div>
@@ -127,17 +127,17 @@ const Services: React.FC = () => {
               key={index}
               variants={itemVariants}
               whileHover={{ y: -12 }}
-              className="relative group p-10 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md hover:bg-white/10 hover:shadow-[0_15px_40px_rgba(0,255,255,0.1)] transition-all duration-500"
+              className="relative group p-10 rounded-3xl bg-card border border-border backdrop-blur-md hover:bg-accent/10 hover:border-border/50 hover:shadow-lg dark:hover:shadow-[0_15px_40px_rgba(0,255,255,0.1)] transition-all duration-500"
             >
               {/* Número de fondo sutil */}
-              <span className="absolute top-4 right-8 text-7xl font-bold text-white/5 group-hover:text-cyan-500/20 transition-colors">
+              <span className="absolute top-4 right-8 text-7xl font-bold text-foreground/5 group-hover:text-cyan-500/20 transition-colors">
                 {item.icon}
               </span>
 
-              <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-cyan-400 transition-colors">
+              <h3 className="text-2xl font-bold text-foreground mb-4 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors duration-500">
                 {item.title}
               </h3>
-              <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">
+              <p className="text-muted-foreground leading-relaxed group-hover:text-foreground/80 transition-colors duration-500">
                 {item.desc}
               </p>
 
@@ -154,10 +154,10 @@ const Services: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true }}
           variants={itemVariants}
-          className="mt-20 p-12 rounded-[2rem] bg-gradient-to-b from-white/5 to-transparent border border-white/10 text-center"
+          className="mt-20 p-12 rounded-[2rem] bg-card border border-border text-center transition-colors duration-500"
         >
-          <h3 className="text-3xl font-bold text-white mb-4">Dedicación a la Excelencia</h3>
-          <p className="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed">
+          <h3 className="text-3xl font-bold text-foreground mb-4 transition-colors duration-500">Dedicación a la Excelencia</h3>
+          <p className="text-muted-foreground text-lg max-w-3xl mx-auto leading-relaxed transition-colors duration-500">
             En KrouHub creemos en relaciones a largo plazo. Nos enfocamos en entender tu negocio y optimizar tus procesos para entregar soluciones que impulsen tu crecimiento.
           </p>
         </motion.div>

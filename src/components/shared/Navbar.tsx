@@ -4,11 +4,12 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence, useScroll, useSpring, MotionValue } from 'framer-motion';
+import { ThemeToggle } from '../ui/ThemeToggle';
+import { useTheme } from 'next-themes';
 
-// Importante: Asegúrate de que la ruta del logo sea correcta según tu árbol de proyecto
-import logo from "@/../public/KrouHub_Logo_blanco.png"
+import logoBlanco from "../../../public/KrouHub_Logo_blanco.png";
+import logoNegro from "../../../public/KrouHub_Logo_negro.png";
 
-// Definimos la interfaz para los links de navegación
 interface NavLink {
   name: string;
   href: string;
@@ -17,16 +18,11 @@ interface NavLink {
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [scrolled, setScrolled] = useState<boolean>(false);
-
-  // 1. Lógica para la barra de progreso superior
-  const { scrollYProgress }: { scrollYProgress: MotionValue<number> } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
+  const [mounted, setMounted] = useState(false);
+  const { theme, resolvedTheme } = useTheme();
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = (): void => {
       setScrolled(window.scrollY > 50);
     };
@@ -34,21 +30,47 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const { scrollYProgress }: { scrollYProgress: MotionValue<number> } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  const [currentLogo, setCurrentLogo] = useState(logoBlanco);
+
+  useEffect(() => {
+    if (mounted) {
+      const activeTheme = resolvedTheme || theme;
+      setCurrentLogo(activeTheme === 'dark' ? logoBlanco : logoNegro);
+    }
+  }, [mounted, resolvedTheme, theme]);
+
   const navLinks: NavLink[] = [
     { name: 'Inicio', href: '/' },
     { name: 'Servicios', href: '/servicios' },
   ];
 
+  if (!mounted) {
+    return (
+      <nav className="fixed top-0 w-full py-6 bg-transparent h-[104px] z-[100]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
+          <div className="h-10 w-32 bg-foreground/5 animate-pulse rounded-lg" />
+        </div>
+      </nav>
+    );
+  }
+
   return (
     <nav
       className={`fixed top-0 z-[100] w-full transition-all duration-500 ${scrolled
-        ? "bg-[#030712]/70 backdrop-blur-md py-2"
-        : "bg-transparent py-6"
+          ? "bg-background/80 backdrop-blur-lg py-2 border-b border-border shadow-sm"
+          : "bg-transparent py-6"
         }`}
     >
       {/* BARRA DE PROGRESO */}
       <motion.div
-        className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-500 to-cyan-400 origin-left"
+        className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-600 to-cyan-400 origin-left"
         style={{ scaleX }}
       />
 
@@ -56,19 +78,15 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between items-center h-16">
 
           {/* LOGO */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex-shrink-0"
-          >
-            <Link href="/" className="flex items-center">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-shrink-0">
+            <Link href="/" className="flex items-center transition-transform hover:scale-105 active:scale-95">
               <Image
-                src={logo}
+                src={currentLogo}
                 alt="Logo Krou Hub"
-                width={350}
-                height={250}
-                priority // Agregamos priority para LCP (Largest Contentful Paint)
-                className="h-12 w-auto opacity-90 hover:opacity-100 transition-opacity"
+                width={180}
+                height={50}
+                priority
+                className="h-10 w-auto transition-all duration-500"
               />
             </Link>
           </motion.div>
@@ -79,27 +97,31 @@ const Navbar: React.FC = () => {
               <Link
                 key={link.name}
                 href={link.href}
-                className="px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors relative group"
+                className="px-4 py-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors relative group"
               >
                 {link.name}
-                <span className="absolute inset-x-4 -bottom-1 h-[1px] bg-cyan-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+                <span className="absolute inset-x-4 -bottom-1 h-[2px] bg-cyan-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center" />
               </Link>
             ))}
 
             <Link
               href="/servicios/#contactanos"
-              className="ml-4 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 px-5 py-2 rounded-full text-sm font-bold hover:bg-cyan-500 hover:text-white transition-all duration-300"
+              className="ml-4 bg-cyan-500/10 border border-cyan-500/20 text-cyan-700 dark:text-cyan-400 px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest hover:bg-cyan-500 hover:text-white transition-all duration-300 shadow-lg shadow-cyan-500/10"
             >
               Contacto
             </Link>
+            <div className="ml-4 pl-4 border-l border-border/50">
+              <ThemeToggle />
+            </div>
           </div>
 
           {/* BOTÓN MÓVIL */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center gap-4">
+            <ThemeToggle />
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-white p-2 focus:outline-none"
-              aria-label="Toggle menu"
+              className="text-foreground p-2 rounded-xl bg-foreground/5 hover:bg-foreground/10 transition-colors"
+              aria-label="Menu"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {isOpen
@@ -116,17 +138,17 @@ const Navbar: React.FC = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 w-full bg-[#030712] border-b border-white/10 flex flex-col p-6 space-y-4 md:hidden"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="absolute top-full left-0 w-full bg-background/95 backdrop-blur-xl border-b border-border flex flex-col p-8 space-y-6 md:hidden shadow-2xl overflow-hidden"
           >
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="text-lg text-gray-300 hover:text-cyan-400 transition-colors"
+                className="text-2xl font-black text-foreground/70 hover:text-cyan-500 transition-colors"
               >
                 {link.name}
               </Link>
@@ -134,7 +156,7 @@ const Navbar: React.FC = () => {
             <Link
               href="/servicios/#contactanos"
               onClick={() => setIsOpen(false)}
-              className="text-lg text-cyan-400 font-bold"
+              className="text-xl text-cyan-600 dark:text-cyan-400 font-black uppercase tracking-widest pt-4 border-t border-border"
             >
               Contacto
             </Link>
