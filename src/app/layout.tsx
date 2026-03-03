@@ -9,6 +9,7 @@ import SmoothScroller from "../components/ui/SmoothScroller";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import MetricoolTracker from "../components/analytics/Metricool";
 import MetaPixel from "../components/analytics/MetaPixel";
+import Clarity from "../components/analytics/Clarity";
 import WhatsAppButton from "../components/shared/WhatsAppButton";
 
 const geistSans = Geist({
@@ -88,6 +89,7 @@ export default function RootLayout({
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || ""} />
           <MetricoolTracker />
           <MetaPixel />
+          <Clarity />
           <SmoothScroller />
           <SpotlightBackground />
           <Header />
