@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Script from "next/script";
 import { Send, User, Mail, MessageSquare, Phone, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
+import { sendGAEvent } from "@next/third-parties/google";
 
 export default function ContactForm() {
     // Estado del formulario (Tus variables en Español)
@@ -77,6 +78,15 @@ export default function ContactForm() {
             });
 
             if (response.ok) {
+                // Evento GA4 - Envío exitoso del formulario
+                sendGAEvent({
+                    event: 'generate_lead',
+                    value: {
+                        method: 'Contact Form',
+                        service: formData.servicio,
+                    }
+                });
+
                 setStatus("success");
                 setFormData({
                     nombre: "",
