@@ -6,7 +6,7 @@ import { ThemeProvider } from "../components/providers/ThemeProvider";
 import Footer from "../components/layout/Footer";
 import SpotlightBackground from "../components/ui/SpotlightBackground";
 import SmoothScroller from "../components/ui/SmoothScroller";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleTagManager } from "@next/third-parties/google";
 import MetricoolTracker from "../components/analytics/Metricool";
 import MetaPixel from "../components/analytics/MetaPixel";
 import Clarity from "../components/analytics/Clarity";
@@ -74,9 +74,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+
   return (
     <html lang="es" suppressHydrationWarning>
-
+      {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -86,7 +88,6 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || ""} />
           <MetricoolTracker />
           <MetaPixel />
           <Clarity />
