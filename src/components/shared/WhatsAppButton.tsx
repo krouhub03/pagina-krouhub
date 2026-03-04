@@ -27,12 +27,9 @@ const WhatsAppButton = () => {
 
     // Función para trackear el clic en Analytics
     const trackWhatsAppClick = () => {
-        sendGAEvent({
-            event: 'generate_lead',
-            value: {
-                method: 'WhatsApp',
-                location: 'Floating Button',
-            }
+        sendGAEvent('event' as any, 'generate_lead' as any, {
+            method: 'WhatsApp',
+            location: 'Floating Button',
         });
     };
 

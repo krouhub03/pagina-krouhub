@@ -79,14 +79,11 @@ export default function ContactForm() {
 
             if (response.ok) {
                 // Evento GA4 - Envío exitoso del formulario
-                sendGAEvent({
-                    event: 'form_submit',
-                    value: {
-                        form_id: 'contact_form',
-                        form_name: 'Formulario de Contacto',
-                        form_destination: window.location.pathname,
-                        service: formData.servicio,
-                    }
+                sendGAEvent('event' as any, 'form_submit' as any, {
+                    form_id: 'contact_form',
+                    form_name: 'Formulario de Contacto',
+                    form_destination: window.location.pathname,
+                    service: formData.servicio,
                 });
 
                 setStatus("success");
