@@ -56,13 +56,14 @@ export default function ContactForm() {
 
             const token = await new Promise<string>((resolve, reject) => {
                 const grecaptcha = (window as GrecaptchaWindow).grecaptcha;
-                if (!grecaptcha || !grecaptcha.enterprise) {
+                const enterprise = grecaptcha?.enterprise;
+                if (!enterprise) {
                     reject(new Error("reCAPTCHA not loaded"));
                     return;
                 }
-                grecaptcha.enterprise.ready(async () => {
+                enterprise.ready(async () => {
                     try {
-                        const token = await grecaptcha.enterprise.execute(siteKey, { action: 'submit' });
+                        const token = await enterprise.execute(siteKey, { action: "submit" });
                         resolve(token);
                     } catch (err) {
                         reject(err);

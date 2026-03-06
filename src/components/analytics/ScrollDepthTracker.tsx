@@ -1,15 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { getCurrentPagePath, track } from "@/lib/tracking";
 
 const THRESHOLDS = [25, 50, 75, 90];
 
 export default function ScrollDepthTracker() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const search = searchParams.toString();
   const firedThresholds = useRef<Set<number>>(new Set());
 
   useEffect(() => {
@@ -40,7 +38,7 @@ export default function ScrollDepthTracker() {
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
-  }, [pathname, search]);
+  }, [pathname]);
 
   return null;
 }
