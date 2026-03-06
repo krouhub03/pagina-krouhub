@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Sparkles, ArrowRight } from "lucide-react";
+import { sendGTMEvent } from "@next/third-parties/google";
 export default function CTA() {
     return (
         <section className="py-24 relative overflow-hidden flex flex-col justify-center min-h-[50vh] snap-start bg-background transition-colors duration-500">
@@ -37,6 +38,7 @@ export default function CTA() {
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center ">
                         <Link
                             href="/servicios#contactanos"
+                            onClick={() => sendGTMEvent({ event: "click_cta", button_name: "CTA Solicitar Cotizacion", value: 1 })}
                             // CAMBIO CLAVE: bg-slate-950 para claro, bg-white para oscuro
                             className="group relative px-10 py-5 bg-red-500 dark:bg-primary text-white dark:text-slate-950 rounded-full font-bold text-lg shadow-xl hover:shadow-cyan-500/20 transition-all transform hover:-translate-y-1 overflow-hidden"
                         >

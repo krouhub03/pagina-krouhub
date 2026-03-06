@@ -79,12 +79,7 @@ export default function ContactForm() {
 
             if (response.ok) {
                 // Evento GA4 - Envío exitoso del formulario
-                sendGTMEvent({
-                    event: "generate_lead",
-                    method: "Contact Form",
-                    service: formData.servicio,
-                    form_destination: window.location.pathname,
-                });
+                sendGTMEvent({ event: "generate_lead", form_name: "Contact Form", service_requested: formData.servicio, value: 1 });
 
                 setStatus("success");
                 setFormData({

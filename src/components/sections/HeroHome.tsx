@@ -9,6 +9,7 @@ import {
   useTransform,
   Variants
 } from "framer-motion";
+import { sendGTMEvent } from "@next/third-parties/google";
 
 const HeroHome: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -127,6 +128,7 @@ const HeroHome: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
               <motion.a
                 href="/servicios#contactanos"
+                onClick={() => sendGTMEvent({ event: "click_cta", button_name: "Hero Comienza tu Proyecto", value: 1 })}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
                 className="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] transition-all"
