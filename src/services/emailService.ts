@@ -13,24 +13,34 @@ export class EmailService {
 
   constructor() {
     const service = getFirstEnv(["SMTP_SERVICE", "MAIL_SERVICE"]);
-    const host = getFirstEnv(["SMTP_HOST", "MAIL_HOST"]);
-    const port = Number(getFirstEnv(["SMTP_PORT", "MAIL_PORT"]) || "587");
-    const user = getFirstEnv(["SMTP_USER", "MAIL_USER"]);
+    const host =
+      getFirstEnv(["SMTP_HOST", "MAIL_HOST", "EMAIL_HOST", "HOSTINGER_SMTP_HOST"]) ||
+      "smtp.hostinger.com";
+    const port = Number(
+      getFirstEnv(["SMTP_PORT", "MAIL_PORT", "EMAIL_PORT", "HOSTINGER_SMTP_PORT"]) || "587"
+    );
+    const user = getFirstEnv([
+      "SMTP_USER",
+      "MAIL_USER",
+      "EMAIL_USER",
+      "HOSTINGER_EMAIL",
+      "HOSTINGER_SMTP_USER",
+    ]);
     const pass = getFirstEnv([
       "SMTP_PASSWORD",
       "SMTP_PASS",
       "MAIL_PASSWORD",
       "MAIL_PASS",
+      "EMAIL_PASSWORD",
+      "EMAIL_PASS",
+      "HOSTINGER_PASSWORD",
+      "HOSTINGER_SMTP_PASSWORD",
     ]);
 
     if (!user || !pass) {
       throw new Error(
         "Missing SMTP credentials: define SMTP_USER/SMTP_PASSWORD (or MAIL_USER/MAIL_PASSWORD)."
       );
-    }
-
-    if (!service && !host) {
-      throw new Error("Missing SMTP host: define SMTP_HOST (or SMTP_SERVICE).");
     }
 
     this.mailUser = user;

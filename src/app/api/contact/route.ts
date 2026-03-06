@@ -63,8 +63,23 @@ export async function POST(request: Request) {
         }
 
         // --- 3. PREPARACIÓN DE CORREO ---
-        const smtpUser = getFirstEnv(['SMTP_USER', 'MAIL_USER']);
-        const smtpPass = getFirstEnv(['SMTP_PASSWORD', 'SMTP_PASS', 'MAIL_PASSWORD', 'MAIL_PASS']);
+        const smtpUser = getFirstEnv([
+            'SMTP_USER',
+            'MAIL_USER',
+            'EMAIL_USER',
+            'HOSTINGER_EMAIL',
+            'HOSTINGER_SMTP_USER'
+        ]);
+        const smtpPass = getFirstEnv([
+            'SMTP_PASSWORD',
+            'SMTP_PASS',
+            'MAIL_PASSWORD',
+            'MAIL_PASS',
+            'EMAIL_PASSWORD',
+            'EMAIL_PASS',
+            'HOSTINGER_PASSWORD',
+            'HOSTINGER_SMTP_PASSWORD'
+        ]);
         const adminEmail = getFirstEnv(['ADMIN_EMAIL']) || smtpUser;
 
         if (!smtpUser || !smtpPass) {

@@ -9,9 +9,9 @@ import SmoothScroller from "../components/ui/SmoothScroller";
 import { GoogleTagManager } from "@next/third-parties/google";
 import WhatsAppButton from "../components/shared/WhatsAppButton";
 import ConsentModeBootstrap from "../components/analytics/ConsentModeBootstrap";
-import ConsentBanner from "../components/analytics/ConsentBanner";
 import ScrollDepthTracker from "../components/analytics/ScrollDepthTracker";
 import RouteChangeTracker from "../components/analytics/RouteChangeTracker";
+import ClientOnlyConsentBanner from "../components/analytics/ClientOnlyConsentBanner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -91,7 +91,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ConsentBanner />
+          <ClientOnlyConsentBanner />
           <RouteChangeTracker />
           <ScrollDepthTracker />
           <SmoothScroller />

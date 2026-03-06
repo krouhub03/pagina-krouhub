@@ -53,7 +53,9 @@ export async function POST(request: Request) {
 
         // --- 2. CONFIGURACIÓN EMAIL ---
         const emailService = new EmailService();
-        const adminEmail = getFirstEnv(['ADMIN_EMAIL']) || getFirstEnv(['SMTP_USER', 'MAIL_USER']);
+        const adminEmail =
+            getFirstEnv(['ADMIN_EMAIL']) ||
+            getFirstEnv(['SMTP_USER', 'MAIL_USER', 'EMAIL_USER', 'HOSTINGER_EMAIL', 'HOSTINGER_SMTP_USER']);
 
         if (!adminEmail) {
             return NextResponse.json({ error: "Error servidor correo" }, { status: 500 });
