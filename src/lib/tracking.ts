@@ -1,4 +1,9 @@
-export type TrackingEvent = "form_submit" | "whatsapp_click" | "scroll_depth";
+export type TrackingEvent =
+  | "page_view"
+  | "form_submit"
+  | "whatsapp_click"
+  | "scroll_depth"
+  | "click_cta";
 
 export type ConsentState = {
   analytics: boolean;

@@ -11,6 +11,7 @@ import WhatsAppButton from "../components/shared/WhatsAppButton";
 import ConsentModeBootstrap from "../components/analytics/ConsentModeBootstrap";
 import ConsentBanner from "../components/analytics/ConsentBanner";
 import ScrollDepthTracker from "../components/analytics/ScrollDepthTracker";
+import RouteChangeTracker from "../components/analytics/RouteChangeTracker";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -91,6 +92,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ConsentBanner />
+          <RouteChangeTracker />
           <ScrollDepthTracker />
           <SmoothScroller />
           <SpotlightBackground />
