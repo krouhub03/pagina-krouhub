@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { EmailService } from '@/services/emailService';
+import { getFirstEnv } from '@/lib/server/env';
 
 export async function POST(request: Request) {
     try {
@@ -62,9 +63,9 @@ export async function POST(request: Request) {
         }
 
         // --- 3. PREPARACIÓN DE CORREO ---
-        const smtpUser = process.env.SMTP_USER;
-        const smtpPass = process.env.SMTP_PASSWORD || process.env.SMTP_PASS;
-        const adminEmail = process.env.ADMIN_EMAIL || smtpUser;
+        const smtpUser = getFirstEnv(['SMTP_USER', 'MAIL_USER']);
+        const smtpPass = getFirstEnv(['SMTP_PASSWORD', 'SMTP_PASS', 'MAIL_PASSWORD', 'MAIL_PASS']);
+        const adminEmail = getFirstEnv(['ADMIN_EMAIL']) || smtpUser;
 
         if (!smtpUser || !smtpPass) {
             return NextResponse.json({ error: "Error de configuración del servidor de correo" }, { status: 500 });
@@ -150,6 +151,15 @@ export async function POST(request: Request) {
 
     } catch (error: any) {
         console.error("Error CRÍTICO en API:", error);
-        return NextResponse.json({ error: error.message || "Error interno" }, { status: 500 });
+        const message = error?.message || "Error interno";
+        const authFailed = typeof message === "string" && message.includes("535");
+        return NextResponse.json(
+            {
+                error: authFailed
+                    ? "SMTP auth failed (535). Verifica SMTP_USER/SMTP_PASSWORD sin comillas, App Password vigente y host/port correctos."
+                    : message
+            },
+            { status: 500 }
+        );
     }
 }

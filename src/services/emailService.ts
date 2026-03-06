@@ -1,58 +1,83 @@
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
+import { getFirstEnv } from "@/lib/server/env";
 
-// Definimos la interfaz para los adjuntos (opcional, ayuda con TypeScript)
 interface Attachment {
-    filename: string;
-    content: Buffer | string;
-    cid?: string;
+  filename: string;
+  content: Buffer | string;
+  cid?: string;
 }
 
 export class EmailService {
-    private transporter;
+  private transporter;
+  private mailUser: string;
 
-    constructor() {
-        const port = Number(process.env.SMTP_PORT) || 587; // Por defecto 587 si falla la variable
+  constructor() {
+    const service = getFirstEnv(["SMTP_SERVICE", "MAIL_SERVICE"]);
+    const host = getFirstEnv(["SMTP_HOST", "MAIL_HOST"]);
+    const port = Number(getFirstEnv(["SMTP_PORT", "MAIL_PORT"]) || "587");
+    const user = getFirstEnv(["SMTP_USER", "MAIL_USER"]);
+    const pass = getFirstEnv([
+      "SMTP_PASSWORD",
+      "SMTP_PASS",
+      "MAIL_PASSWORD",
+      "MAIL_PASS",
+    ]);
 
-        this.transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST,
-            port: port,
-            // AQUÍ ESTÁ EL CAMBIO CLAVE:
-            // Solo usar secure: true si el puerto es 465. Para 587 debe ser false.
-            secure: port === 465,
-            auth: {
-                user: process.env.SMTP_USER,
-                pass: process.env.SMTP_PASSWORD || process.env.SMTP_PASS,
-            },
-            // Opcional: Esto ayuda si tienes problemas con certificados auto-firmados en desarrollo
-            tls: {
-                rejectUnauthorized: false
-            }
-        });
+    if (!user || !pass) {
+      throw new Error(
+        "Missing SMTP credentials: define SMTP_USER/SMTP_PASSWORD (or MAIL_USER/MAIL_PASSWORD)."
+      );
     }
 
-    async sendEmail(
-        to: string,
-        subject: string,
-        html: string,
-        replyTo?: string,
-        attachments?: Attachment[]
-    ) {
-        const mailOptions = {
-            from: `"KrouHub Web" <${process.env.SMTP_USER}>`,
-            to,
-            subject,
-            html,
-            replyTo,
-            attachments,
+    if (!service && !host) {
+      throw new Error("Missing SMTP host: define SMTP_HOST (or SMTP_SERVICE).");
+    }
+
+    this.mailUser = user;
+
+    const transportConfig = service
+      ? {
+          service,
+          auth: { user, pass },
+        }
+      : {
+          host,
+          port,
+          secure: port === 465,
+          auth: { user, pass },
         };
 
-        try {
-            const info = await this.transporter.sendMail(mailOptions);
-            console.log("Message sent: %s", info.messageId);
-            return info;
-        } catch (error) {
-            console.error("Error sending email: ", error);
-            throw error;
-        }
+    this.transporter = nodemailer.createTransport({
+      ...transportConfig,
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+  }
+
+  async sendEmail(
+    to: string,
+    subject: string,
+    html: string,
+    replyTo?: string,
+    attachments?: Attachment[]
+  ) {
+    const mailOptions = {
+      from: `"KrouHub Web" <${this.mailUser}>`,
+      to,
+      subject,
+      html,
+      replyTo,
+      attachments,
+    };
+
+    try {
+      const info = await this.transporter.sendMail(mailOptions);
+      console.log("Message sent: %s", info.messageId);
+      return info;
+    } catch (error) {
+      console.error("Error sending email:", error);
+      throw error;
     }
+  }
 }

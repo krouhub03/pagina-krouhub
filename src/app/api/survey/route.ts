@@ -1,6 +1,7 @@
 // src/app/api/survey/route.ts
 import { NextResponse } from 'next/server';
 import { EmailService } from '@/services/emailService';
+import { getFirstEnv } from '@/lib/server/env';
 
 export async function POST(request: Request) {
     try {
@@ -52,7 +53,7 @@ export async function POST(request: Request) {
 
         // --- 2. CONFIGURACIÓN EMAIL ---
         const emailService = new EmailService();
-        const adminEmail = process.env.ADMIN_EMAIL || process.env.SMTP_USER;
+        const adminEmail = getFirstEnv(['ADMIN_EMAIL']) || getFirstEnv(['SMTP_USER', 'MAIL_USER']);
 
         if (!adminEmail) {
             return NextResponse.json({ error: "Error servidor correo" }, { status: 500 });
