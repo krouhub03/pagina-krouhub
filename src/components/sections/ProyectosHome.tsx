@@ -100,6 +100,7 @@ const Proyectos: React.FC = () => {
                     src={proyecto.image}
                     alt={proyecto.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
@@ -108,7 +109,7 @@ const Proyectos: React.FC = () => {
                 <div className="p-5 flex flex-col flex-grow">
                   <div className="flex justify-between items-start mb-3">
                     <div className="w-10 h-10 relative bg-white/5 rounded-lg p-1.5 border border-white/10">
-                      <Image src={proyecto.logo} alt="logo" fill className="object-contain" />
+                      <Image src={proyecto.logo} alt="logo" fill sizes="40px" className="object-contain" />
                     </div>
                     <div className="flex gap-1">
                       {proyecto.tech.slice(0, 2).map((t) => (

@@ -6,7 +6,7 @@ export default function MetricoolTracker() {
     return (
         <Script
             id="metricool-tracker"
-            strategy="afterInteractive"
+            strategy="lazyOnload"
             dangerouslySetInnerHTML={{
                 __html: `
                     function loadScript(a){
