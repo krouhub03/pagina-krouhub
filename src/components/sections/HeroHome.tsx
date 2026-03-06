@@ -93,28 +93,14 @@ const HeroHome: React.FC = () => {
       <div className="absolute bottom-1/4 -right-20 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none animate-pulse" style={{ animationDelay: "2s" }} />
 
       {/* Content */}
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        viewport={{ once: false, amount: 0.3 }}
-        className="w-full h-full flex items-center justify-center"
-      >
+      <div className="w-full h-full flex items-center justify-center">
         <motion.div
           style={{ y: yParallax, opacity: opacityScroll }}
           className="relative z-10 max-w-5xl mx-auto px-6 text-center"
         >
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="flex flex-col items-center"
-          >
+          <div className="flex flex-col items-center">
             {/* Badge */}
-            <motion.div
-              variants={itemVariants}
-              className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full border border-cyan-500/30 bg-cyan-500/5 backdrop-blur-xl"
-            >
+            <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full border border-cyan-500/30 bg-cyan-500/5 backdrop-blur-xl">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
@@ -122,32 +108,23 @@ const HeroHome: React.FC = () => {
               <span className="text-xs font-semibold text-primary tracking-wider uppercase">
                 Soluciones Digitales de Próxima Generación
               </span>
-            </motion.div>
+            </div>
 
             {/* Title */}
-            <motion.h1
-              variants={itemVariants}
-              className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-foreground tracking-tight leading-[1.05] mb-4 md:mb-6"
-            >
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-foreground tracking-tight leading-[1.05] mb-4 md:mb-6">
               Impulsamos tu <br />
               <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
                 Presencia Digital
               </span>
-            </motion.h1>
+            </h1>
 
             {/* Description */}
-            <motion.p
-              variants={itemVariants}
-              className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
-            >
+            <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
               Transformamos ideas complejas en productos digitales elegantes y escalables.
-            </motion.p>
+            </p>
 
             {/* Buttons */}
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-col sm:flex-row gap-4 w-full justify-center"
-            >
+            <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
               <motion.a
                 href="/servicios#contactanos"
                 whileHover={{ scale: 1.05 }}
@@ -165,10 +142,10 @@ const HeroHome: React.FC = () => {
               >
                 Nuestros Servicios
               </motion.a>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </motion.div>
-      </motion.div>
+      </div>
 
       {/* Scroll Indicator */}
       <motion.div

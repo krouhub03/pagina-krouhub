@@ -8,7 +8,7 @@ export default function CTA() {
             {/* Background Gradients */}
             <div className="absolute inset-0 pointer-events-none z-0">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-cyan-500/5 rounded-full blur-[120px]" />
-                <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03]" />
+                <div className="absolute inset-0 z-0 bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20" />
             </div>
 
             <div className="max-w-5xl mx-auto px-6 relative z-10 text-center">
