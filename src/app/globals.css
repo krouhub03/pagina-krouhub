@@ -80,11 +80,7 @@ html {
   scroll-behavior: smooth;
 }
 
-@media (min-width: 768px) {
-  html {
-    scroll-snap-type: y proximity;
-  }
-}
+
 
 html.lenis, html.lenis body {
   height: auto;
