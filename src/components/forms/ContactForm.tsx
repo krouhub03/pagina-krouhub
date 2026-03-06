@@ -4,10 +4,22 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Script from "next/script";
 import { Send, User, Mail, MessageSquare, Phone, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
-import { sendGTMEvent } from "@next/third-parties/google";
+import { getCurrentPagePath, track } from "@/lib/tracking";
+
+type GrecaptchaEnterprise = {
+    ready: (callback: () => void) => void;
+    execute: (siteKey: string, options: { action: string }) => Promise<string>;
+};
+
+type GrecaptchaWindow = Window & {
+    grecaptcha?: {
+        enterprise?: GrecaptchaEnterprise;
+    };
+};
 
 export default function ContactForm() {
-    // Estado del formulario (Tus variables en Español)
+    const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
+
     const [formData, setFormData] = useState({
         nombre: "",
         email: "",
@@ -19,7 +31,6 @@ export default function ContactForm() {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessage, setErrorMessage] = useState("");
 
-    // Limpiar badge de reCAPTCHA cuando el componente se desmonte
     useEffect(() => {
         return () => {
             const badge = document.querySelector('.grecaptcha-badge');
@@ -40,17 +51,15 @@ export default function ContactForm() {
         setErrorMessage("");
 
         try {
-            // --- RECAPTCHA ENTERPRISE ---
-            const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+            const siteKey = recaptchaSiteKey;
+            if (!siteKey) throw new Error("Missing reCAPTCHA site key");
 
-            // Esperar a que grecaptcha esté listo
             const token = await new Promise<string>((resolve, reject) => {
-                const grecaptcha = (window as any).grecaptcha;
+                const grecaptcha = (window as GrecaptchaWindow).grecaptcha;
                 if (!grecaptcha || !grecaptcha.enterprise) {
                     reject(new Error("reCAPTCHA not loaded"));
                     return;
                 }
-
                 grecaptcha.enterprise.ready(async () => {
                     try {
                         const token = await grecaptcha.enterprise.execute(siteKey, { action: 'submit' });
@@ -61,42 +70,38 @@ export default function ContactForm() {
                 });
             });
 
-            // Convertimos tus datos (español) a lo que espera la API (inglés)
             const apiPayload = {
                 name: formData.nombre,
                 email: formData.email,
                 phone: formData.telefono,
                 subject: formData.servicio,
                 message: formData.mensaje,
-                recaptchaToken: token // Enviamos el token para su verificación
+                recaptchaToken: token
             };
 
             const response = await fetch("/api/contact", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(apiPayload), // Enviamos el payload traducido
+                body: JSON.stringify(apiPayload),
             });
 
             if (response.ok) {
-                // Evento GA4 - Envío exitoso del formulario
-                sendGTMEvent({ event: "generate_lead", form_name: "Contact Form", service_requested: formData.servicio, value: 1 });
-
-                setStatus("success");
-                setFormData({
-                    nombre: "",
-                    email: "",
-                    telefono: "",
-                    servicio: "Desarrollo y Diseño Web",
-                    mensaje: ""
+                track("form_submit", {
+                    form_name: "contact_form",
+                    page_path: getCurrentPagePath(),
+                    lead_type: formData.servicio,
                 });
+                setStatus("success");
+                setFormData({ nombre: "", email: "", telefono: "", servicio: "Desarrollo y Diseño Web", mensaje: "" });
             } else {
                 const data = await response.json();
                 throw new Error(data.error || "Error al enviar el mensaje");
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Error:", error);
             setStatus("error");
-            setErrorMessage(error.message || "Algo salió mal. Por favor intenta de nuevo.");
+            const message = error instanceof Error ? error.message : "Algo salió mal. Por favor intenta de nuevo.";
+            setErrorMessage(message);
         }
     };
 
@@ -105,18 +110,18 @@ export default function ContactForm() {
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-card/80 backdrop-blur-3xl border border-border p-10 rounded-[32px] text-center"
+                className="bg-card/80 backdrop-blur-3xl border border-border p-6 rounded-[24px] text-center"
             >
-                <div className="w-20 h-20 bg-cyan-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <CheckCircle2 className="text-cyan-400" size={40} />
+                <div className="w-14 h-14 bg-cyan-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle2 className="text-cyan-400" size={28} />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-4">¡Mensaje Enviado!</h3>
-                <p className="text-gray-400 mb-8">
+                <h3 className="text-lg font-bold text-white mb-2">¡Mensaje Enviado!</h3>
+                <p className="text-gray-400 text-sm mb-5">
                     Gracias por contactarnos. Hemos recibido tu mensaje correctamente.
                 </p>
                 <button
                     onClick={() => setStatus("idle")}
-                    className="text-cyan-400 font-semibold hover:text-cyan-300 transition-colors"
+                    className="text-cyan-400 text-sm font-semibold hover:text-cyan-300 transition-colors"
                 >
                     Enviar otro mensaje
                 </button>
@@ -127,24 +132,27 @@ export default function ContactForm() {
     return (
         <form
             onSubmit={handleSubmit}
-            className="relative bg-card/80 backdrop-blur-md border border-border p-6 md:p-10 rounded-[24px] lg:rounded-[32px] space-y-4 md:space-y-5 shadow-xl"
+            className="relative bg-card/80 backdrop-blur-md border border-border p-4 md:p-6 rounded-[20px] lg:rounded-[24px] space-y-3 shadow-xl"
         >
-            <Script
-                src="https://www.google.com/recaptcha/enterprise.js?render=6Ldg3EgsAAAAAFMJ1c9b5fA-MswgA2EbKpyxnrps"
-                strategy="afterInteractive"
-            />
+            {recaptchaSiteKey ? (
+                <Script
+                    src={`https://www.google.com/recaptcha/enterprise.js?render=${recaptchaSiteKey}`}
+                    strategy="afterInteractive"
+                />
+            ) : null}
+
             {status === "error" && (
-                <div className="bg-destructive/10 border border-destructive/20 p-4 rounded-xl flex items-center gap-3 text-destructive text-sm">
-                    <AlertCircle size={18} />
+                <div className="bg-destructive/10 border border-destructive/20 p-3 rounded-lg flex items-center gap-2 text-destructive text-xs">
+                    <AlertCircle size={14} />
                     <span>{errorMessage}</span>
                 </div>
             )}
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
-                <div className="space-y-1.5">
-                    <label className="text-[9px] lg:text-[10px] font-mono text-muted-foreground uppercase tracking-widest ml-1">Nombre</label>
+    <div id="contactanos" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                    <label className="text-[8px] font-mono text-muted-foreground uppercase tracking-widest ml-1">Nombre</label>
                     <div className="relative group">
-                        <User className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-cyan-500 transition-colors" size={16} />
+                        <User className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-cyan-500 transition-colors" size={13} />
                         <input
                             required
                             type="text"
@@ -152,15 +160,15 @@ export default function ContactForm() {
                             value={formData.nombre}
                             onChange={handleChange}
                             placeholder="Tu nombre"
-                            className="w-full bg-background/50 border border-border rounded-xl py-3 pl-11 pr-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-cyan-500/40 transition-all text-sm"
+                            className="w-full bg-background/50 border border-border rounded-lg py-2 pl-9 pr-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-cyan-500/40 transition-all text-xs"
                         />
                     </div>
                 </div>
 
-                <div className="space-y-1.5">
-                    <label className="text-[9px] lg:text-[10px] font-mono text-muted-foreground uppercase tracking-widest ml-1">Teléfono</label>
+                <div className="space-y-1">
+                    <label className="text-[8px] font-mono text-muted-foreground uppercase tracking-widest ml-1">Teléfono</label>
                     <div className="relative group">
-                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-cyan-500 transition-colors" size={16} />
+                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-cyan-500 transition-colors" size={13} />
                         <input
                             required
                             type="tel"
@@ -168,16 +176,16 @@ export default function ContactForm() {
                             value={formData.telefono}
                             onChange={handleChange}
                             placeholder="+34..."
-                            className="w-full bg-background/50 border border-border rounded-xl py-3 pl-11 pr-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-cyan-500/40 transition-all text-sm"
+                            className="w-full bg-background/50 border border-border rounded-lg py-2 pl-9 pr-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-cyan-500/40 transition-all text-xs"
                         />
                     </div>
                 </div>
             </div>
 
-            <div className="space-y-1.5">
-                <label className="text-[9px] lg:text-[10px] font-mono text-muted-foreground uppercase tracking-widest ml-1">Email</label>
+            <div className="space-y-1">
+                <label className="text-[8px] font-mono text-muted-foreground uppercase tracking-widest ml-1">Email</label>
                 <div className="relative group">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-purple-500 transition-colors" size={16} />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-purple-500 transition-colors" size={13} />
                     <input
                         required
                         type="email"
@@ -185,36 +193,36 @@ export default function ContactForm() {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="email@empresa.com"
-                        className="w-full bg-background/50 border border-border rounded-xl py-3 pl-11 pr-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-purple-500/40 transition-all text-sm"
+                        className="w-full bg-background/50 border border-border rounded-lg py-2 pl-9 pr-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-purple-500/40 transition-all text-xs"
                     />
                 </div>
             </div>
 
-            <div className="space-y-1.5">
-                <label className="text-[9px] lg:text-[10px] font-mono text-muted-foreground uppercase tracking-widest ml-1">¿Qué necesitas?</label>
+            <div className="space-y-1">
+                <label className="text-[8px] font-mono text-muted-foreground uppercase tracking-widest ml-1">¿Qué necesitas?</label>
                 <select
                     name="servicio"
                     value={formData.servicio}
                     onChange={handleChange}
-                    className="w-full bg-background/50 border border-border rounded-xl py-3 px-4 text-foreground focus:outline-none focus:border-border transition-all text-sm appearance-none cursor-pointer"
+                    className="w-full bg-background/50 border border-border rounded-lg py-2 px-3 text-foreground focus:outline-none focus:border-border transition-all text-xs appearance-none cursor-pointer"
                 >
                     <option>Desarrollo y Diseño Web</option>
                     <option>Automatizaciones</option>
                 </select>
             </div>
 
-            <div className="space-y-1.5">
-                <label className="text-[9px] lg:text-[10px] font-mono text-muted-foreground uppercase tracking-widest ml-1">Mensaje</label>
+            <div className="space-y-1">
+                <label className="text-[8px] font-mono text-muted-foreground uppercase tracking-widest ml-1">Mensaje</label>
                 <div className="relative group">
-                    <MessageSquare className="absolute left-4 top-3 text-muted-foreground group-focus-within:text-foreground transition-colors" size={16} />
+                    <MessageSquare className="absolute left-3 top-2.5 text-muted-foreground group-focus-within:text-foreground transition-colors" size={13} />
                     <textarea
                         required
                         name="mensaje"
                         value={formData.mensaje}
                         onChange={handleChange}
-                        rows={4}
+                        rows={3}
                         placeholder="Cuéntanos un poco..."
-                        className="w-full bg-background/50 border border-border rounded-xl py-3 pl-11 pr-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-border transition-all resize-none text-sm"
+                        className="w-full bg-background/50 border border-border rounded-lg py-2 pl-9 pr-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-border transition-all resize-none text-xs"
                     ></textarea>
                 </div>
             </div>
@@ -224,18 +232,18 @@ export default function ContactForm() {
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
                 type="submit"
-                className="w-full bg-gradient-to-r from-cyan-600 to-indigo-600 p-[1px] rounded-xl overflow-hidden mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-gradient-to-r from-cyan-600 to-indigo-600 p-[1px] rounded-lg overflow-hidden mt-1 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-                <div className="w-full h-full bg-foreground/90 dark:bg-[#0B0F19]/90 py-3.5 rounded-[11px] flex items-center justify-center gap-2">
+                <div className="w-full h-full bg-foreground/90 dark:bg-[#0B0F19]/90 py-2.5 rounded-[7px] flex items-center justify-center gap-2">
                     {status === "loading" ? (
                         <>
-                            <Loader2 size={16} className="text-background dark:text-white animate-spin" />
-                            <span className="text-background dark:text-white font-bold text-sm tracking-wide">Enviando...</span>
+                            <Loader2 size={13} className="text-background dark:text-white animate-spin" />
+                            <span className="text-background dark:text-white font-bold text-xs tracking-wide">Enviando...</span>
                         </>
                     ) : (
                         <>
-                            <span className="text-background dark:text-white font-bold text-sm tracking-wide">Comenzar Ahora</span>
-                            <Send size={16} className="text-background dark:text-white" />
+                            <span className="text-background dark:text-white font-bold text-xs tracking-wide">Comenzar Ahora</span>
+                            <Send size={13} className="text-background dark:text-white" />
                         </>
                     )}
                 </div>

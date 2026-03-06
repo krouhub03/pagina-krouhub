@@ -14,13 +14,12 @@ export default function Contactanos({ scrollProgress }: ContactanosProps) {
     const safeScroll = scrollProgress || fallbackScroll;
 
     // Sincronización de aparición (entre el 80% y 90% del scroll total)
-    const opacity = useTransform(safeScroll, [0.80, 0.90], [0, 1]);
+    const opacity = useTransform(safeScroll, [0.70, 0.90 ], [0, 1]);
 
     return (
         <motion.section
             style={{ opacity: scrollProgress ? opacity : 1 }}
-            id="contactanos"
-            className="py-20 lg:py-40 bg-background relative min-h-screen flex items-center overflow-visible snap-start transition-colors duration-500"
+            className="py-20 lg:py-40 bg-background relative min-h-[90dvh] flex items-start lg:items-center overflow-visible snap-start scroll-mt-28 md:scroll-mt-32 transition-colors duration-500"
         >
             {/* Luces de fondo sutiles (Cian y Púrpura) */}
             <div className="absolute inset-0 pointer-events-none">
@@ -72,6 +71,7 @@ export default function Contactanos({ scrollProgress }: ContactanosProps) {
                     </div>
                 </motion.div>
             </div>
+        
         </motion.section>
     );
 }

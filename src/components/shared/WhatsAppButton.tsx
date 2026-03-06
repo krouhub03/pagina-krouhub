@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Bot, X, MessageCircle } from "lucide-react";
 import { useState, useEffect } from "react";
-import { sendGTMEvent } from "@next/third-parties/google";
+import { getCurrentPagePath, track } from "@/lib/tracking";
 
 const WhatsAppButton = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -27,7 +27,10 @@ const WhatsAppButton = () => {
 
     // Función para trackear el clic en Analytics
     const trackWhatsAppClick = () => {
-        sendGTMEvent({ event: "generate_lead", method: "WhatsApp", value: 1 });
+        track("whatsapp_click", {
+            placement: "floating_button",
+            page_path: getCurrentPagePath(),
+        });
     };
 
     return (

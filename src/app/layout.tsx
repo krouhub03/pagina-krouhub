@@ -7,16 +7,15 @@ import Footer from "../components/layout/Footer";
 import SpotlightBackground from "../components/ui/SpotlightBackground";
 import SmoothScroller from "../components/ui/SmoothScroller";
 import { GoogleTagManager } from "@next/third-parties/google";
-import MetricoolTracker from "../components/analytics/Metricool";
-import MetaPixel from "../components/analytics/MetaPixel";
-import Clarity from "../components/analytics/Clarity";
 import WhatsAppButton from "../components/shared/WhatsAppButton";
+import ConsentModeBootstrap from "../components/analytics/ConsentModeBootstrap";
+import ConsentBanner from "../components/analytics/ConsentBanner";
+import ScrollDepthTracker from "../components/analytics/ScrollDepthTracker";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
-// eslint-disable-next-line
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
@@ -78,19 +77,21 @@ export default function RootLayout({
 
   return (
     <html lang="es" suppressHydrationWarning>
-      {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
+      <head>
+        <ConsentModeBootstrap />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
         <ThemeProvider
           attribute="data-theme"
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          <MetricoolTracker />
-          <MetaPixel />
-          <Clarity />
+          <ConsentBanner />
+          <ScrollDepthTracker />
           <SmoothScroller />
           <SpotlightBackground />
           <Header />
