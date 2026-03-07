@@ -1,16 +1,16 @@
-"use client";
+﻿"use client";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { Bot, X, MessageCircle } from "lucide-react";
 import { useState, useEffect } from "react";
-import { getCurrentPagePath, track } from "@/lib/tracking";
+import { sendGTMEvent } from "@next/third-parties/google";
 
 const WhatsAppButton = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [showTooltip, setShowTooltip] = useState(false);
 
     useEffect(() => {
-        // Aparece el botón tras 1.5s
+        // Aparece el botÃ³n tras 1.5s
         const timer = setTimeout(() => setIsVisible(true), 1500);
         // Aparece el mensaje de ayuda tras 4s
         const tooltipTimer = setTimeout(() => setShowTooltip(true), 4000);
@@ -22,14 +22,14 @@ const WhatsAppButton = () => {
     }, []);
 
     const phoneNumber = "573180157998";
-    const message = encodeURIComponent("¡Hola KrouHub! Me gustaría obtener más información sobre sus servicios.");
+    const message = encodeURIComponent("Â¡Hola KrouHub! Me gustarÃ­a obtener mÃ¡s informaciÃ³n sobre sus servicios.");
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
 
-    // Función para trackear el clic en Analytics
     const trackWhatsAppClick = () => {
-        track("whatsapp_click", {
+        sendGTMEvent({
+            event: "whatsapp_click",
             placement: "floating_button",
-            page_path: getCurrentPagePath(),
+            page_path: window.location.pathname + window.location.search,
         });
     };
 
@@ -58,7 +58,7 @@ const WhatsAppButton = () => {
 
                                         <div className="flex flex-col">
                                             <span className="text-[10px] uppercase tracking-tighter text-slate-500 dark:text-slate-400 font-bold">Asistente KrouHub</span>
-                                            <p className="text-sm font-semibold text-slate-900 dark:text-white">¿Cómo podemos ayudarte?</p>
+                                            <p className="text-sm font-semibold text-slate-900 dark:text-white">Â¿CÃ³mo podemos ayudarte?</p>
                                         </div>
 
                                         <button
@@ -75,7 +75,7 @@ const WhatsAppButton = () => {
                             )}
                         </AnimatePresence>
 
-                        {/* Botón Principal con Efecto Glow y Evento GA4 */}
+                        {/* BotÃ³n Principal con Efecto Glow y Evento GA4 */}
                         <motion.a
                             href={whatsappUrl}
                             target="_blank"
@@ -88,7 +88,7 @@ const WhatsAppButton = () => {
                             transition={{ type: "spring", stiffness: 260, damping: 20 }}
                             className="pointer-events-auto group relative flex items-center justify-center w-16 h-16 rounded-[1.5rem] transition-all duration-300"
                         >
-                            {/* Fondo Gradiente con Sombra Dinámica */}
+                            {/* Fondo Gradiente con Sombra DinÃ¡mica */}
                             <div className="absolute inset-0 bg-gradient-to-tr from-green-600 to-emerald-400 rounded-[1.5rem] shadow-[0_10px_30px_rgba(34,197,94,0.4)] group-hover:shadow-[0_15px_40px_rgba(34,197,94,0.6)] transition-all duration-300" />
 
                             {/* Icono Principal Animado */}
@@ -107,12 +107,12 @@ const WhatsAppButton = () => {
                                 <MessageCircle size={32} strokeWidth={2.5} />
                             </motion.div>
 
-                            {/* Indicador de Notificación (Social Proof) */}
+                            {/* Indicador de NotificaciÃ³n (Social Proof) */}
                             <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 border-2 border-white dark:border-slate-950 rounded-full z-20 flex items-center justify-center">
                                 <span className="text-[10px] font-black text-white">1</span>
                             </span>
 
-                            {/* Pulso de atención */}
+                            {/* Pulso de atenciÃ³n */}
                             <div className="absolute inset-0 rounded-[1.5rem] bg-green-500 animate-ping opacity-10 group-hover:opacity-25" />
                         </motion.a>
 
@@ -124,3 +124,5 @@ const WhatsAppButton = () => {
 };
 
 export default WhatsAppButton;
+
+

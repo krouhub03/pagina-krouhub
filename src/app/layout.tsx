@@ -8,10 +8,6 @@ import SpotlightBackground from "../components/ui/SpotlightBackground";
 import SmoothScroller from "../components/ui/SmoothScroller";
 import { GoogleTagManager } from "@next/third-parties/google";
 import WhatsAppButton from "../components/shared/WhatsAppButton";
-import ConsentModeBootstrap from "../components/analytics/ConsentModeBootstrap";
-import ScrollDepthTracker from "../components/analytics/ScrollDepthTracker";
-import RouteChangeTracker from "../components/analytics/RouteChangeTracker";
-import ClientOnlyConsentBanner from "../components/analytics/ClientOnlyConsentBanner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -78,9 +74,6 @@ export default function RootLayout({
 
   return (
     <html lang="es" suppressHydrationWarning>
-      <head>
-        <ConsentModeBootstrap />
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -91,9 +84,6 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ClientOnlyConsentBanner />
-          <RouteChangeTracker />
-          <ScrollDepthTracker />
           <SmoothScroller />
           <SpotlightBackground />
           <Header />

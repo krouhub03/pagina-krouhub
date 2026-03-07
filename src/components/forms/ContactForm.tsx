@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Script from "next/script";
 import { Send, User, Mail, MessageSquare, Phone, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
-import { getCurrentPagePath, track } from "@/lib/tracking";
+import { sendGTMEvent } from "@next/third-parties/google";
 
 type GrecaptchaEnterprise = {
     ready: (callback: () => void) => void;
@@ -87,10 +87,11 @@ export default function ContactForm() {
             });
 
             if (response.ok) {
-                track("form_submit", {
+                sendGTMEvent({
+                    event: "form_submit",
                     form_name: "contact_form",
-                    page_path: getCurrentPagePath(),
                     lead_type: formData.servicio,
+                    page_path: window.location.pathname + window.location.search,
                 });
                 setStatus("success");
                 setFormData({ nombre: "", email: "", telefono: "", servicio: "Desarrollo y Diseño Web", mensaje: "" });
