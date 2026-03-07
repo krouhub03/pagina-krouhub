@@ -22,7 +22,7 @@ const WhatsAppButton = () => {
     }, []);
 
     const phoneNumber = "573180157998";
-    const message = encodeURIComponent("Â¡Hola KrouHub! Me gustarÃ­a obtener mÃ¡s informaciÃ³n sobre sus servicios.");
+    const message = encodeURIComponent("¡Hola KrouHub! Me gustaría obtener más información sobre sus servicios.");
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
 
     const trackWhatsAppClick = () => {
