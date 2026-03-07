@@ -58,7 +58,7 @@ const WhatsAppButton = () => {
 
                                         <div className="flex flex-col">
                                             <span className="text-[10px] uppercase tracking-tighter text-slate-500 dark:text-slate-400 font-bold">Asistente KrouHub</span>
-                                            <p className="text-sm font-semibold text-slate-900 dark:text-white">Â¿CÃ³mo podemos ayudarte?</p>
+                                            <p className="text-sm font-semibold text-slate-900 dark:text-white">¿Como podemos ayudarte?</p>
                                         </div>
 
                                         <button
