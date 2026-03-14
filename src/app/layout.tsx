@@ -8,8 +8,6 @@ import SpotlightBackground from "../components/ui/SpotlightBackground";
 import SmoothScroller from "../components/ui/SmoothScroller";
 import { GoogleTagManager } from "@next/third-parties/google";
 import WhatsAppButton from "../components/shared/WhatsAppButton";
-import MetricoolTracker from "../components/analytics/Metricool";
-import Clarity from "../components/analytics/Clarity";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -80,8 +78,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
-        <MetricoolTracker />
-        <Clarity />
         <ThemeProvider
           attribute="data-theme"
           defaultTheme="dark"
