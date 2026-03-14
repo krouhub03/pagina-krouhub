@@ -87,7 +87,9 @@ export default function RootLayout({
           <SmoothScroller />
           <SpotlightBackground />
           <Header />
-          {children}
+          <main className="flex-grow flex flex-col min-h-screen">
+            {children}
+          </main>
           <Footer />
           <WhatsAppButton />
         </ThemeProvider>

@@ -41,7 +41,7 @@ export default async function SurveyPage(props: PageProps) {
     };
 
     return (
-        <main className="min-h-screen bg-[#020617] relative selection:bg-cyan-500/30 overflow-hidden">
+        <div className="min-h-screen bg-[#020617] relative selection:bg-cyan-500/30 overflow-hidden">
             <div className="fixed inset-0 pointer-events-none">
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-500/5 blur-[120px] rounded-full" />
                 <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/5 blur-[120px] rounded-full" />
@@ -54,6 +54,6 @@ export default async function SurveyPage(props: PageProps) {
             }>
                 {renderContent()}
             </Suspense>
-        </main>
+        </div>
     );
 }

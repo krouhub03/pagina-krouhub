@@ -19,7 +19,7 @@ const Home: React.FC = () => {
       {/* 1. Hero */}
       <HeroHome />
 
-      <main className="relative z-10">
+      <div className="relative z-10">
 
         <Seccion />
         <Servicios />
@@ -27,7 +27,7 @@ const Home: React.FC = () => {
         <ProyectosHome />
         <CTA />
         {/* 7. Footer */}
-      </main>
+      </div>
     </div>
   );
 };
